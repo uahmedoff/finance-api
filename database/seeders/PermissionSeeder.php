@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
+use App\Models\Api\V1\Permission;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder

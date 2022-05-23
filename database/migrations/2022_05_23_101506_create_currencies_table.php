@@ -4,26 +4,26 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateCurrenciesTable extends Migration
 {
     public function up(){
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('currencies', function (Blueprint $table) {
             $table->uuid('id')->primary()->index();
             $table->timestamps();
             $table->softDeletes();
             $table->uuid('created_by')->nullable();
             $table->uuid('updated_by')->nullable();
             $table->uuid('deleted_by')->nullable();
-            $table->string('name');
-            $table->string('phone')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->tinyInteger('language_id');
+            $table->string('code');
+            $table->string('ccy');
+            $table->string('ccnm_ru');
+            $table->string('ccnm_uz');
+            $table->string('ccnm_uzc');
+            $table->string('ccnm_en');
         });
     }
 
     public function down(){
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('currencies');
     }
 }

@@ -1,4 +1,4 @@
-<h1>Exams app</h1>
+<h1>Finance app api</h1>
 
 ### Installation
 

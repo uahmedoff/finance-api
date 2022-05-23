@@ -28,8 +28,6 @@ class AuthController extends Controller{
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // $token = auth()->login($user);
-
         return (new UserResource($request->user()))->additional([
             'meta' => [
                 'token' => $token

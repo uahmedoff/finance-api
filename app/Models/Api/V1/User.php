@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Api\V1;
 
 use App\Models\Traits\HasUuid;
+use Wildside\Userstamps\Userstamps;
+use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
-{
-    use HasFactory, Notifiable, HasUuid, HasRoles;
+class User extends Authenticatable implements JWTSubject{
+    
+    use HasFactory, Notifiable, HasUuid, HasRoles, Userstamps, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +22,10 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'phone',
+        'name', 
+        'email', 
+        'password',
     ];
 
     /**
@@ -59,5 +64,13 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function wallets(){
+        return $this->belongsToMany(Wallet::class);
+    }
+
+    public function history(){
+        return $this->morphMany(History::class, 'historiable');
     }
 }
