@@ -9,13 +9,13 @@ trait ScopeTrait{
         return $query->orderBy($column, $order);
     }
 
-    public function scopeSearch($query, $string){
+    public function scopeSearch($query){
         $columns = $this->search_columns;
-        return $query->where(function ($query) use($string, $columns) {
+        return $query->where(function ($query) use($columns) {
             foreach ($columns as $column){
-                $query->orwhere($column, 'ilike',  '%' . $string .'%');
+                $query->orwhere($column, 'ilike',  '%' . request()->get('search') .'%');
             }
         });
     }
-    
+
 }

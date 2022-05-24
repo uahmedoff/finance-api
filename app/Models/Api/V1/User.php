@@ -26,8 +26,8 @@ class User extends Authenticatable implements JWTSubject{
     protected $fillable = [
         'phone',
         'name', 
-        'email', 
         'password',
+        'lang'
     ];
 
     protected $hidden = [
@@ -50,8 +50,8 @@ class User extends Authenticatable implements JWTSubject{
         if ($filter = request('phone')){
             $query = $query->where('phone','ilike','%' .  $filter . '%');
         }
-        if ($filter = request('language_id')){
-            $query = $query->where('language_id',$filter);
+        if ($filter = request('lang')){
+            $query = $query->where('lang',$filter);
         }
         return $query;
     }

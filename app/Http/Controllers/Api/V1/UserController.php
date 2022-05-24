@@ -24,6 +24,7 @@ class UserController extends Controller{
             return response()->json(['message'=>__('auth.forbidden')],403);
 
         $users = $this->user;
+        $users = $users->search();
         $users = $users->filter();
         $users = $users->sort()->paginate($this->per_page);
         return UserResource::collection($users);    

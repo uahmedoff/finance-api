@@ -16,7 +16,7 @@ class UserRequest extends FormRequest{
                 'phone' => 'required|integer|unique:users',
                 'name' => 'required',
                 'password' => 'required|min:6',
-                'lang' => 'nullable|max:3',
+                'lang' => 'nullable|max:3|in:uz,ru,en',
                 'role' => 'required|in:CEO,CFO,Manager,Cashier'
             ];
 
@@ -25,7 +25,7 @@ class UserRequest extends FormRequest{
                 'phone' => 'nullable|integer',
                 'name' => 'nullable',
                 'password' => 'nullable|min:6',
-                'lang' => 'nullable|max:3',
+                'lang' => 'nullable|max:3|in:uz,ru,en',
                 'role' => 'nullable|in:CEO,CFO,Manager,Cashier'
             ];  
     }
