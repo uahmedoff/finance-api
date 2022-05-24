@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 class RoleHasPermissionSeeder extends Seeder
 {
     public function run(){
-        $role = Role::findByName('Owner');
+        $role = Role::findByName('CEO');
         $role->syncPermissions(Permission::all());
     }
 }

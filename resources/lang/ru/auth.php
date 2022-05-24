@@ -13,9 +13,9 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'logged_out' => 'Successfully logged out',
-    'forbidden' => 'You have no permission',
+    'failed' => 'Эти учетные данные не соответствуют нашим записям.',
+    'throttle' => 'Слишком много попыток входа. Повторите попытку через :seconds секунд.',
+    'logged_out' => 'Успешно вышел из системы.',
+    'forbidden' => 'У вас нет разрешения',
 
 ];

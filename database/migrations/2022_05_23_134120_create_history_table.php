@@ -13,7 +13,7 @@ class CreateHistoryTable extends Migration
             $table->uuid('historiable_id');
             $table->string('historiable_type');
             $table->unsignedInteger('status');
-            $table->json('description')->nullable();
+            $table->json('details')->nullable();
         });
     }
 

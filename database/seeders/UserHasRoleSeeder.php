@@ -10,7 +10,7 @@ class UserHasRoleSeeder extends Seeder
 {
     public function run(){
         $user = User::first();
-        $role = Role::findByName("Owner");
+        $role = Role::findByName("CEO");
         $user->assignRole($role);
     }
 }

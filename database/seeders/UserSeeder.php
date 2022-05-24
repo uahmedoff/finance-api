@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
             'name' => 'Owner',
             'phone' => '901234567',
             'password' => bcrypt('1234567'),
-            'language_id' => 1
+            'lang' => 'en'
         ]);
     }
 }

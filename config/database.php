@@ -93,6 +93,8 @@ return [
 
     ],
 
+    'records_per_page' => env('DB_RECORDS_PER_PAGE',25),
+
     /*
     |--------------------------------------------------------------------------
     | Migration Repository Table

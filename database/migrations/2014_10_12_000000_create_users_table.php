@@ -16,10 +16,9 @@ class CreateUsersTable extends Migration
             $table->uuid('deleted_by')->nullable();
             $table->string('name');
             $table->string('phone')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->tinyInteger('language_id');
+            $table->string('lang',3)->default('en');
         });
     }
 

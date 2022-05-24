@@ -24,4 +24,13 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
         Route::post('refresh', 'AuthController@refresh');
         Route::post('me', 'AuthController@me');
     });
+
+    Route::group(['middleware' => 'jwt.auth'], function ($router) {
+        
+        Route::apiResources([
+            'users' => UserController::class
+        ]);
+        
+    });
+
 });

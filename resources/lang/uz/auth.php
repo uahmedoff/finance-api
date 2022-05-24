@@ -13,9 +13,9 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'logged_out' => 'Successfully logged out',
-    'forbidden' => 'You have no permission',
+    'failed' => "Bu hisob ma'lumotlari bizning yozuvlarimizga mos kelmayapti.",
+    'throttle' => "Kirish uchun juda koʻp urinishlar. :seconds soniyadan keyin qayta urinib ko'ring",
+    'logged_out' => 'Hisobdan muvaffaqiyatli chiqdi.',
+    'forbidden' => "Sizda bu amalni bajarish uchun ruxsat yo'q",
 
 ];
