@@ -5,8 +5,7 @@ namespace Database\Seeders;
 use App\Models\Api\V1\User;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
-{
+class UserSeeder extends Seeder{
     
     public function run(){
         User::create([
@@ -16,4 +15,5 @@ class UserSeeder extends Seeder
             'lang' => 'en'
         ]);
     }
+    
 }

@@ -52,11 +52,11 @@ class UserController extends Controller{
         return new UserResource($user);    
     }
 
-    public function show(User $user){
+    public function show($id){
         if(!auth()->user()->can('See user'))
             return response()->json(['message'=>__('auth.forbidden')],403);
-        
-        return new UserResource($user->with('roles')->first());
+        $user = $this->user->findOrFail($id)->load('roles');
+        return new UserResource($user);
     }
 
     public function update(UserRequest $request, User $user){

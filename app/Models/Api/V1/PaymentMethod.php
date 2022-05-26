@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
 
-class PaymentMethod extends Model{
+class PaymentMethod extends BaseModel{
 
-    use HasFactory, HasUuid, Userstamps, SoftDeletes;
+    use HasFactory, 
+        HasUuid, 
+        Userstamps, 
+        SoftDeletes;
 
     protected $fillable = [
         'name'

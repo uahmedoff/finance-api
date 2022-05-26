@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],function(){
-    Route::group([
-        'middleware' => 'api',
-        'prefix' => 'auth'
-    ], function ($router) {
-        Route::post('login', 'AuthController@login');
-        Route::post('logout', 'AuthController@logout');
-        Route::post('refresh', 'AuthController@refresh');
-        Route::post('me', 'AuthController@me');
+Route::group(['prefix'=>'v1'],function(){
+    Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+        Route::post('login', [AuthController::class,'login']);
+        Route::post('logout', [AuthController::class,'logout']);
+        Route::post('refresh', [AuthController::class,'refresh']);
+        Route::post('me', [AuthController::class,'me']);
     });
 
     Route::group(['middleware' => 'jwt.auth'], function ($router) {
@@ -30,6 +30,16 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
         Route::apiResources([
             'users' => UserController::class
         ]);
+
+        Route::group(['prefix' => 'roles'], function($router){
+            Route::get('/',[PermissionController::class, 'roles']);
+            Route::get('{id}/permissions',[PermissionController::class, 'permissions']);
+            Route::put('{id}/permissions',[PermissionController::class, 'attach_permissions_to_role']);
+        });
+
+        Route::group(['prefix' => 'permissions'], function($router){
+            Route::get('/',[PermissionController::class, 'permissions']);
+        });
         
     });
 

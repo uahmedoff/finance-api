@@ -5,6 +5,7 @@ namespace App\Models\Api\V1;
 use App\Models\Api\V1\Role;
 use App\Models\Traits\HasUuid;
 use App\Models\Traits\ScopeTrait;
+use App\Models\Traits\TimezoneTrait;
 use Wildside\Userstamps\Userstamps;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -17,11 +18,15 @@ use Chelout\RelationshipEvents\Concerns\HasMorphToManyEvents;
 
 class User extends Authenticatable implements JWTSubject{
     
-    use HasFactory, Notifiable, HasUuid, HasRoles, Userstamps, SoftDeletes, ScopeTrait, HasMorphToManyEvents;
-
-    const LANGUAGE_UZBEK = 1;
-    const LANGUAGE_RUSSIAN = 2;
-    const LANGUAGE_ENGLISH = 3;
+    use HasFactory, 
+        Notifiable, 
+        HasUuid, 
+        HasRoles, 
+        Userstamps, 
+        SoftDeletes, 
+        ScopeTrait, 
+        HasMorphToManyEvents, 
+        TimezoneTrait;
 
     protected $fillable = [
         'phone',
@@ -64,17 +69,46 @@ class User extends Authenticatable implements JWTSubject{
         return [];
     }
 
+    public function wallets(){
+        return $this->belongsToMany(Wallet::class);
+    }
+
+    public function history(){
+        return $this->morphMany(History::class, 'historiable');
+    }
+
     protected static function boot(){
         parent::boot();
         static::created(function ($model) {
             $model->history()->create([
                 'status' => History::STATUS_MODEL_CREATED,
                 'details' => [
-                    'name' => $model->name,
-                    'phone' => $model->phone,
-                    'lang' => $model->lang,
+                    'user' => [
+                        'name' => $model->name,
+                        'phone' => $model->phone,
+                        'lang' => $model->lang,
+                    ],
+                    'created_by' => (auth()->user()) ? [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name,
+                        'phone' => auth()->user()->phone
+                    ] : []
                 ]
             ]);
+            if(auth()->user())
+                History::create([
+                    'historiable_type' => self::class,
+                    'historiable_id' => auth()->user()->id,
+                    'status' => History::STATUS_CREATED_BY_USER,
+                    'details' => [
+                        'created_user' => [
+                            'id' => $model->id,
+                            'name' => $model->name,
+                            'phone' => $model->phone,
+                            'lang' => $model->lang,
+                        ]
+                    ]
+                ]);
         });
         static::updating(function ($model) {
             $model->history()->create([
@@ -90,54 +124,131 @@ class User extends Authenticatable implements JWTSubject{
                         'phone' => request('phone'),
                         'lang' => request('lang'),
                     ],
+                    'updated_by' => (auth()->user()) ? [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name,
+                        'phone' => auth()->user()->phone
+                    ] : []
                 ]
             ]);
+            if(auth()->user())
+                History::create([
+                    'historiable_type' => self::class,
+                    'historiable_id' => auth()->user()->id,
+                    'status' => History::STATUS_UPDATED_BY_USER,
+                    'details' => [
+                        'updated_user' => [
+                            'id' => $model->id,
+                            'name' => $model->name,
+                            'phone' => $model->phone,
+                            'lang' => $model->lang,
+                        ]
+                    ]
+                ]);
         });
         static::deleted(function ($model) {
             $model->history()->create([
                 'status' => History::STATUS_MODEL_DELETED,
                 'details' => [
-                    'id' => $model->id,
-                    'name' => $model->name,
-                    'phone' => $model->phone,
-                    'lang' => $model->lang,
+                    'user' => [
+                        'id' => $model->id,
+                        'name' => $model->name,
+                        'phone' => $model->phone,
+                        'lang' => $model->lang,
+                    ],
+                    'deleted_by' => (auth()->user()) ? [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name,
+                        'phone' => auth()->user()->phone
+                    ] : []
                 ]
             ]);
+            if(auth()->user())
+                History::create([
+                    'historiable_type' => self::class,
+                    'historiable_id' => auth()->user()->id,
+                    'status' => History::STATUS_DELETED_BY_USER,
+                    'details' => [
+                        'deleted_user' => [
+                            'id' => $model->id,
+                            'name' => $model->name,
+                            'phone' => $model->phone,
+                            'lang' => $model->lang,
+                        ]
+                    ]
+                ]);
         });
         static::morphToManyAttached(function ($relation, $parent, $ids, $attributes) {
+            $role = Role::find($ids[0]);
             History::create([
-                'historiable_type' => 'App\Models\Api\V1\User',
+                'historiable_type' => self::class,
                 'historiable_id' => $parent->id,
                 'status' => History::STATUS_ROLE_ATTACHED,
                 'details' => [
                     'role' => [
-                        'id' => Role::find($ids[0])->id,
-                        'name' => Role::find($ids[0])->name
-                    ]
+                        'id' => $role->id,
+                        'name' => $role->name
+                    ],
+                    'attached_by' => (auth()->user()) ? [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name,
+                        'phone' => auth()->user()->phone
+                    ] : []
                 ]
             ]);
+            if(auth()->user())
+                History::create([
+                    'historiable_type' => self::class,
+                    'historiable_id' => auth()->user()->id,
+                    'status' => History::STATUS_ROLE_ATTACHED_BY,
+                    'details' => [
+                        'user' => [
+                            'id' => $parent->id,
+                            'name' => $parent->name,
+                            'phone' => $parent->phone
+                        ],
+                        'role' => [
+                            'id' => $role->id,
+                            'name' => $role->name
+                        ],
+                    ]
+                ]);
         });
         static::morphToManyDetached(function ($relation, $parent, $ids, $attributes) {
+            $role = Role::find($ids[0]);
             History::create([
-                'historiable_type' => 'App\Models\Api\V1\User',
+                'historiable_type' => self::class,
                 'historiable_id' => $parent->id,
                 'status' => History::STATUS_ROLE_DETACHED,
                 'details' => [
                     'role' => [
-                        'id' => Role::find($ids[0])->id,
-                        'name' => Role::find($ids[0])->name
-                    ]
+                        'id' => $role->id,
+                        'name' => $role->name
+                    ],
+                    'detached_by' => (auth()->user()) ? [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name,
+                        'phone' => auth()->user()->phone
+                    ] : []
                 ]
             ]);
+            if(auth()->user())
+                History::create([
+                    'historiable_type' => self::class,
+                    'historiable_id' => auth()->user()->id,
+                    'status' => History::STATUS_ROLE_DETACHED_BY,
+                    'details' => [
+                        'user' => [
+                            'id' => $parent->id,
+                            'name' => $parent->name,
+                            'phone' => $parent->phone
+                        ],
+                        'role' => [
+                            'id' => $role->id,
+                            'name' => $role->name
+                        ],
+                    ]
+                ]);
         });
     }
-
-    public function wallets(){
-        return $this->belongsToMany(Wallet::class);
-    }
-
-    public function history(){
-        return $this->morphMany(History::class, 'historiable');
-    }
-
 }

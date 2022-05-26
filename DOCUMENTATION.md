@@ -109,3 +109,79 @@ Example:
 ### DELETE `/users/{id}`
 
 No params
+
+## Seeing roles and permissions, syncing permissions to role
+
+### GET `/roles`
+
+Parameters:
+
+- search (optional, any string to search from phone and name fields)
+- with_permissions (optional, boolean, true)
+- column (optional, for ordering by column name)
+- order (optional, for ordering ascendant and descendant, values can be 'asc' or 'desc')
+
+Example:
+
+```
+{
+	"search": "Something",
+	"with_permissions": true,
+    "column": "created_at",
+    "order": "desc
+}
+```
+
+### GET `/roles/{id}/permissions`
+
+Parameters:
+
+- search (optional, any string to search from phone and name fields)
+- with_roles (optional, boolean, true)
+- column (optional, for ordering by column name)
+- order (optional, for ordering ascendant and descendant, values can be 'asc' or 'desc')
+
+Example:
+
+```
+{
+	"search": "Something",
+	"with_roles": true,
+    "column": "created_at",
+    "order": "desc
+}
+```
+
+### PUT `/roles/{id}/permissions`
+
+Parameters:
+
+- permissions (required, comma separated permissions inside the string)
+
+Example:
+
+```
+{
+	"permissions":"See users,Attach role to user"
+}
+```
+
+### GET `/permissions`
+
+Parameters:
+
+- search (optional, any string to search from phone and name fields)
+- with_roles (optional, boolean, true)
+- column (optional, for ordering by column name)
+- order (optional, for ordering ascendant and descendant, values can be 'asc' or 'desc')
+
+Example:
+
+```
+{
+	"search": "Something",
+	"with_roles": true,
+    "column": "created_at",
+    "order": "desc
+}
+```

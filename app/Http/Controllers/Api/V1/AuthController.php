@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\V1\UserMiniResource;
 use App\Http\Resources\Api\V1\UserResource;
 
 class AuthController extends Controller{
@@ -19,7 +20,7 @@ class AuthController extends Controller{
             return response()->json(['error' => __('auth.failed')], 401);
         }
 
-        return (new UserResource($request->user()))->additional([
+        return (new UserMiniResource($request->user()))->additional([
             'meta' => [
                 'token' => $token
             ]
@@ -29,7 +30,7 @@ class AuthController extends Controller{
     }
 
     public function me(){
-        return response()->json(auth()->user());
+        return new UserResource(auth()->user());
     }
 
     public function logout(){

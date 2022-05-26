@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Chelout\RelationshipEvents\Concerns\HasMorphToEvents;
 
-class History extends Model{
+class History extends BaseModel{
     
-    use HasFactory, HasUuid, HasMorphToEvents;
+    use HasFactory, 
+        HasUuid, 
+        HasMorphToEvents;
 
     const UPDATED_AT = null; 
 
@@ -18,6 +20,17 @@ class History extends Model{
     const STATUS_MODEL_DELETED = 3;
     const STATUS_ROLE_ATTACHED = 4;
     const STATUS_ROLE_DETACHED = 5;
+    const STATUS_CREATED_BY_USER = 6;
+    const STATUS_UPDATED_BY_USER = 7;
+    const STATUS_DELETED_BY_USER = 8;
+    const STATUS_ROLE_ATTACHED_BY = 9;
+    const STATUS_ROLE_DETACHED_BY = 10;
+    const STATUS_PERMISSION_ATTACHED = 11;
+    const STATUS_PERMISSION_DETACHED = 12;
+    const STATUS_PERMISSION_ATTACHED_BY = 13;
+    const STATUS_PERMISSION_DETACHED_BY = 14;
+    const STATUS_PERMISSION_SYNCED = 15;
+    const STATUS_PERMISSION_SYNCED_BY = 16;
 
     protected $table = 'history';
 

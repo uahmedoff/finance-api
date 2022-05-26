@@ -5,10 +5,9 @@ namespace Database\Seeders;
 use App\Models\Api\V1\Permission;
 use Illuminate\Database\Seeder;
 
-class PermissionSeeder extends Seeder
-{
-    public function run()
-    {
+class PermissionSeeder extends Seeder{
+
+    public function run(){
         Permission::create([
             'name' => "See users",
         ]);
@@ -25,10 +24,17 @@ class PermissionSeeder extends Seeder
             'name' => "Delete user",
         ]);
         Permission::create([
+            'name' => "See roles",
+        ]);
+        Permission::create([
+            'name' => "See permissions",
+        ]);
+        Permission::create([
             'name' => "Attach permissions to role",
         ]);
         Permission::create([
             'name' => "Attach role to user",
         ]);
     }
+    
 }

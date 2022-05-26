@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
 
-class Category extends Model{
+class Category extends BaseModel{
     
-    use HasFactory, HasUuid, Userstamps, SoftDeletes;
+    use HasFactory, 
+        HasUuid, 
+        Userstamps, 
+        SoftDeletes;
 
     const TYPE_INCOME = 1;
     const TYPE_EXPENSE = 2;

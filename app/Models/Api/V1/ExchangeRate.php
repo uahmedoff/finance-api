@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
 
-class ExchangeRate extends Model{
+class ExchangeRate extends BaseModel{
 
-    use HasFactory, HasUuid, Userstamps;
+    use HasFactory, 
+        HasUuid, 
+        Userstamps;
 
     protected $fillable = [
         'currency_id',
