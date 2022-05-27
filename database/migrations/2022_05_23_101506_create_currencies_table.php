@@ -16,10 +16,10 @@ class CreateCurrenciesTable extends Migration
             $table->uuid('deleted_by')->nullable();
             $table->string('code');
             $table->string('ccy');
-            $table->string('ccnm_ru');
-            $table->string('ccnm_uz');
-            $table->string('ccnm_uzc');
-            $table->string('ccnm_en');
+            $table->string('ccynm_ru');
+            $table->string('ccynm_uz');
+            $table->string('ccynm_uzc');
+            $table->string('ccynm_en');
         });
     }
 

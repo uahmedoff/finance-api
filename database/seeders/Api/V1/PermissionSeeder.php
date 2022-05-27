@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Api\V1;
 
 use App\Models\Api\V1\Permission;
 use Illuminate\Database\Seeder;
@@ -34,6 +34,36 @@ class PermissionSeeder extends Seeder{
         ]);
         Permission::create([
             'name' => "Attach role to user",
+        ]);
+        Permission::create([
+            'name' => "See currencies",
+        ]);
+        Permission::create([
+            'name' => "Create currency",
+        ]);
+        Permission::create([
+            'name' => "See currency",
+        ]);
+        Permission::create([
+            'name' => "Edit currency",
+        ]);
+        Permission::create([
+            'name' => "Delete currency",
+        ]);
+        Permission::create([
+            'name' => "See firms",
+        ]);
+        Permission::create([
+            'name' => "Create firm",
+        ]);
+        Permission::create([
+            'name' => "See firm",
+        ]);
+        Permission::create([
+            'name' => "Edit firm",
+        ]);
+        Permission::create([
+            'name' => "Delete firm",
         ]);
     }
     

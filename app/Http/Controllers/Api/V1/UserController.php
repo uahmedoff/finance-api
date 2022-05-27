@@ -23,10 +23,11 @@ class UserController extends Controller{
         if(!auth()->user()->can('See users'))
             return response()->json(['message'=>__('auth.forbidden')],403);
 
-        $users = $this->user;
-        $users = $users->search();
-        $users = $users->filter();
-        $users = $users->sort()->paginate($this->per_page);
+        $users = $this->user
+            ->search()
+            ->filter()
+            ->sort()
+            ->paginate($this->per_page);
         return UserResource::collection($users);    
     }
 
@@ -59,10 +60,11 @@ class UserController extends Controller{
         return new UserResource($user);
     }
 
-    public function update(UserRequest $request, User $user){
+    public function update(UserRequest $request, $id){
         if(!auth()->user()->can('Edit user'))
             return response()->json(['message'=>__('auth.forbidden')],403);
-            
+        
+        $user = $this->user->findOrFail($id);
         DB::beginTransaction();
         try {
             if($request->filled('name'))
@@ -91,7 +93,7 @@ class UserController extends Controller{
     public function destroy(User $user){
         if(!auth()->user()->can('Delete user'))
             return response()->json(['message'=>__('auth.forbidden')],403);
-
         $user->delete();    
+        return response()->json([],204);
     }
 }

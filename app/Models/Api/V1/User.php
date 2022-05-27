@@ -101,7 +101,8 @@ class User extends Authenticatable implements JWTSubject{
                     'historiable_id' => auth()->user()->id,
                     'status' => History::STATUS_CREATED_BY_USER,
                     'details' => [
-                        'created_user' => [
+                        'model' => 'user',
+                        'created' => [
                             'id' => $model->id,
                             'name' => $model->name,
                             'phone' => $model->phone,
@@ -137,11 +138,19 @@ class User extends Authenticatable implements JWTSubject{
                     'historiable_id' => auth()->user()->id,
                     'status' => History::STATUS_UPDATED_BY_USER,
                     'details' => [
-                        'updated_user' => [
+                        'model' => 'user',
+                        'updated' => [
                             'id' => $model->id,
-                            'name' => $model->name,
-                            'phone' => $model->phone,
-                            'lang' => $model->lang,
+                            'old_data' => [
+                                'name' => $model->getOriginal('name'),
+                                'phone' => $model->getOriginal('phone'),
+                                'lang' => $model->getOriginal('lang'),
+                            ],
+                            'new_data' => [
+                                'name' => request('name'),
+                                'phone' => request('phone'),
+                                'lang' => request('lang'),
+                            ],
                         ]
                     ]
                 ]);
@@ -151,7 +160,6 @@ class User extends Authenticatable implements JWTSubject{
                 'status' => History::STATUS_MODEL_DELETED,
                 'details' => [
                     'user' => [
-                        'id' => $model->id,
                         'name' => $model->name,
                         'phone' => $model->phone,
                         'lang' => $model->lang,
@@ -169,7 +177,8 @@ class User extends Authenticatable implements JWTSubject{
                     'historiable_id' => auth()->user()->id,
                     'status' => History::STATUS_DELETED_BY_USER,
                     'details' => [
-                        'deleted_user' => [
+                        'model' => 'user',
+                        'deleted' => [
                             'id' => $model->id,
                             'name' => $model->name,
                             'phone' => $model->phone,

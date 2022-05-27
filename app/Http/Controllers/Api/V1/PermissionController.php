@@ -33,6 +33,14 @@ class PermissionController extends Controller{
         return RoleMiniResource::collection($roles);    
     }
 
+    public function role($id){
+        if(!auth()->user()->can('See roles'))
+            return response()->json(['message'=>__('auth.forbidden')],403);    
+
+        $role = $this->role->findOrFail($id);
+        return new RoleResource($role);    
+    }
+
     public function permissions($role_id = null){
         if(!auth()->user()->can('See permissions'))
             return response()->json(['message'=>__('auth.forbidden')],403);    
@@ -44,6 +52,14 @@ class PermissionController extends Controller{
             ->sort()
             ->paginate($this->per_page);
         return PermissionMiniResource::collection($permissions);    
+    }
+
+    public function permission($id){
+        if(!auth()->user()->can('See permissions'))
+            return response()->json(['message'=>__('auth.forbidden')],403);    
+
+        $permission = $this->permission->findOrFail($id);
+        return new PermissionMiniResource($permission);    
     }
 
     public function attach_permissions_to_role(AttachPermissionRequest $request, $role_id){
