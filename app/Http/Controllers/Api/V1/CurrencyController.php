@@ -61,17 +61,17 @@ class CurrencyController extends Controller{
             return response()->json(['message' => __('auth.forbidden')],403);
         }
         $currency = $this->currency->findOrFail($id);
-        if($request->filled('code'))
+        if($request->filled('code') && $request->code != $currency->getOriginal('code'))
             $currency->code = $request->code;
-        if($request->filled('ccy'))
+        if($request->filled('ccy') && $request->ccy != $currency->getOriginal('ccy'))
             $currency->ccy = $request->ccy;
-        if($request->filled('ccynm_uz'))
+        if($request->filled('ccynm_uz') && $request->ccynm_uz != $currency->getOriginal('ccynm_uz'))
             $currency->ccynm_uz = $request->ccynm_uz;
-        if($request->filled('ccynm_uzc'))
+        if($request->filled('ccynm_uzc') && $request->ccynm_uzc != $currency->getOriginal('ccynm_uzc'))
             $currency->ccynm_uzc = $request->ccynm_uzc;
-        if($request->filled('ccynm_ru'))
+        if($request->filled('ccynm_ru') && $request->ccynm_ru != $currency->getOriginal('ccynm_ru'))
             $currency->ccynm_ru = $request->ccynm_ru;
-        if($request->filled('ccynm_en'))
+        if($request->filled('ccynm_en') && $request->ccynm_en != $currency->getOriginal('ccynm_en'))
             $currency->ccynm_en = $request->ccynm_en;
         $currency->save();
         return new CurrencyResource($currency);

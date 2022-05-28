@@ -31,7 +31,15 @@ class History extends BaseModel{
     const STATUS_PERMISSION_DETACHED_BY = 14;
     const STATUS_PERMISSION_SYNCED = 15;
     const STATUS_PERMISSION_SYNCED_BY = 16;
-
+    const STATUS_USER_ATTACHED_TO_WALLET = 17;
+    const STATUS_USER_DETACHED_FROM_WALLET = 18;
+    const STATUS_USER_ATTACHED_TO_WALLET_BY = 19;
+    const STATUS_USER_DETACHED_FROM_WALLET_BY = 20;
+    const STATUS_WALLET_ATTACHED_TO_USER = 21;
+    const STATUS_WALLET_DETACHED_FROM_USER = 22;
+    const STATUS_WALLET_ATTACHED_TO_USER_BY = 23;
+    const STATUS_WALLET_DETACHED_FROM_USER_BY = 24;
+    
     protected $table = 'history';
 
     public $timestamps = ["created_at"];

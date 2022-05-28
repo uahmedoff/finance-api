@@ -41,7 +41,7 @@ class Role extends SpatieRole{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())

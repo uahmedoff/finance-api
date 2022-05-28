@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\UserRequest;
 use App\Http\Resources\Api\V1\UserResource;
+use App\Http\Resources\Api\V1\UserMiniResource;
 
 class UserController extends Controller{
 
@@ -28,7 +29,7 @@ class UserController extends Controller{
             ->filter()
             ->sort()
             ->paginate($this->per_page);
-        return UserResource::collection($users);    
+        return UserMiniResource::collection($users);    
     }
 
     public function store(UserRequest $request){
@@ -48,6 +49,7 @@ class UserController extends Controller{
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            return $e;
         }        
 
         return new UserResource($user);    
@@ -67,13 +69,13 @@ class UserController extends Controller{
         $user = $this->user->findOrFail($id);
         DB::beginTransaction();
         try {
-            if($request->filled('name'))
+            if($request->filled('name') && $request->name != $user->getOriginal('name'))
                 $user->name = $request->name;
-            if($request->filled('phone') && $request->phone != $user->phone)
+            if($request->filled('phone') && $request->phone != $user->getOriginal('phone'))
                 $user->phone = $request->phone;
             if($request->filled('password'))
                 $user->password = bcrypt($request->password);
-            if($request->filled('lang'))
+            if($request->filled('lang') && $request->lang != $user->getOriginal('lang'))
                 $user->lang = $request->lang;
             $user->save();
             
@@ -90,9 +92,10 @@ class UserController extends Controller{
         return new UserResource($user);    
     }
 
-    public function destroy(User $user){
+    public function destroy($id){
         if(!auth()->user()->can('Delete user'))
             return response()->json(['message'=>__('auth.forbidden')],403);
+        $user = $this->user->findOrFail($id);    
         $user->delete();    
         return response()->json([],204);
     }

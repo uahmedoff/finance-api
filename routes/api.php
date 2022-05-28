@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\CurrencyController;
 use App\Http\Controllers\Api\V1\FirmController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\PermissionController;
+use App\Http\Controllers\Api\V1\WalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,7 @@ Route::group(['prefix'=>'v1'],function(){
             'users' => UserController::class,
             'currencies' => CurrencyController::class,
             'firms' => FirmController::class,
+            'wallets' => WalletController::class
         ]);
 
         Route::group(['prefix' => 'roles'], function($router){
@@ -45,6 +47,11 @@ Route::group(['prefix'=>'v1'],function(){
         Route::group(['prefix' => 'permissions'], function($router){
             Route::get('/',[PermissionController::class, 'permissions']);
             Route::get('/{id}',[PermissionController::class, 'permission']);
+        });
+
+        Route::group(['prefix' => 'wallets'],function($router){
+            Route::put('{id}/users',[WalletController::class,'attach_users']);
+            Route::put('{id}/users/{user_id}/detach',[WalletController::class,'detach_user']);
         });
         
     });

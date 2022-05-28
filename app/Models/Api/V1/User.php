@@ -6,6 +6,7 @@ use App\Models\Api\V1\Role;
 use App\Models\Traits\HasUuid;
 use App\Models\Traits\ScopeTrait;
 use App\Models\Traits\TimezoneTrait;
+use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Wildside\Userstamps\Userstamps;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -26,6 +27,7 @@ class User extends Authenticatable implements JWTSubject{
         SoftDeletes, 
         ScopeTrait, 
         HasMorphToManyEvents, 
+        HasBelongsToManyEvents,
         TimezoneTrait;
 
     protected $fillable = [
@@ -92,7 +94,7 @@ class User extends Authenticatable implements JWTSubject{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())
@@ -129,7 +131,7 @@ class User extends Authenticatable implements JWTSubject{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())
@@ -168,7 +170,7 @@ class User extends Authenticatable implements JWTSubject{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())
@@ -202,7 +204,7 @@ class User extends Authenticatable implements JWTSubject{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())
@@ -238,7 +240,7 @@ class User extends Authenticatable implements JWTSubject{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())
@@ -256,6 +258,66 @@ class User extends Authenticatable implements JWTSubject{
                             'id' => $role->id,
                             'name' => $role->name
                         ],
+                    ]
+                ]);
+        });
+        static::belongsToManyAttached(function ($relation, $parent, $ids) {
+            $wallets = Wallet::whereIn('id',$ids)->get(['id','name']);
+            History::create([
+                'historiable_type' => self::class,
+                'historiable_id' => $parent->id,
+                'status' => History::STATUS_WALLET_ATTACHED_TO_USER,
+                'details' => [
+                    'wallets' => $wallets,
+                    'attached_by' => (auth()->user()) ? [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name,
+                        'phone' => auth()->user()->phone
+                    ] : null
+                ]
+            ]);
+            if(auth()->user())
+                History::create([
+                    'historiable_type' => User::class,
+                    'historiable_id' => auth()->user()->id,
+                    'status' => History::STATUS_WALLET_ATTACHED_TO_USER_BY,
+                    'details' => [
+                        'user' => [
+                            'id' => $parent->id,
+                            'name' => $parent->name,
+                            'phone' => $parent->phone
+                        ],
+                        'wallets' => $wallets,
+                    ]
+                ]);
+        });
+        static::belongsToManyDetached(function ($relation, $parent, $ids) {
+            $wallets = Wallet::whereIn('id',$ids)->get(['id','name']);
+            History::create([
+                'historiable_type' => self::class,
+                'historiable_id' => $parent->id,
+                'status' => History::STATUS_WALLET_DETACHED_FROM_USER,
+                'details' => [
+                    'users' => $wallets,
+                    'detached_by' => (auth()->user()) ? [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name,
+                        'phone' => auth()->user()->phone
+                    ] : null
+                ]
+            ]);
+            if(auth()->user())
+                History::create([
+                    'historiable_type' => User::class,
+                    'historiable_id' => auth()->user()->id,
+                    'status' => History::STATUS_WALLET_DETACHED_FROM_USER_BY,
+                    'details' => [
+                        'user' => [
+                            'id' => $parent->id,
+                            'name' => $parent->name,
+                            'phone' => $parent->phone
+                        ],
+                        'wallets' => $wallets,
                     ]
                 ]);
         });

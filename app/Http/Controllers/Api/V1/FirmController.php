@@ -56,7 +56,7 @@ class FirmController extends Controller{
         }
 
         $firm = $this->firm->findOrFail($id);
-        if($request->filled('name'))
+        if($request->filled('name') && $request->name != $firm->getOriginal('name'))
             $firm->name = $request->name;
         $firm->save();    
         return new FirmResource($firm);

@@ -46,7 +46,7 @@ class Firm extends BaseModel{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())
@@ -77,7 +77,7 @@ class Firm extends BaseModel{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())
@@ -110,7 +110,7 @@ class Firm extends BaseModel{
                         'id' => auth()->user()->id,
                         'name' => auth()->user()->name,
                         'phone' => auth()->user()->phone
-                    ] : []
+                    ] : null
                 ]
             ]);
             if(auth()->user())

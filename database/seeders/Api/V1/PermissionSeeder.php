@@ -65,6 +65,27 @@ class PermissionSeeder extends Seeder{
         Permission::create([
             'name' => "Delete firm",
         ]);
+        Permission::create([
+            'name' => "See wallets",
+        ]);
+        Permission::create([
+            'name' => "Create wallet",
+        ]);
+        Permission::create([
+            'name' => "See wallet",
+        ]);
+        Permission::create([
+            'name' => "Edit wallet",
+        ]);
+        Permission::create([
+            'name' => "Delete wallet",
+        ]);
+        Permission::create([
+            'name' => "Attach users to wallet",
+        ]);
+        Permission::create([
+            'name' => "Detach user from wallet",
+        ]);
     }
     
 }
