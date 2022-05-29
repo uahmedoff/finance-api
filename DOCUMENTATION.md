@@ -637,7 +637,7 @@ Server response:
 }
 ```
 
-## CRUD for currencies
+## Administration of currencies
 
 ### GET `/currencies`
 
@@ -1105,33 +1105,11 @@ Server response:
             "id": "96685fa5-206b-42f4-93eb-2c9c966441a6",
             "name": "Wallet 526",
             "project_api_url": null,
-            "currency": {
-                "id": "96685e54-09a7-4807-9826-25dd4b08c463",
-                "code": "860",
-                "ccy": "UZS",
-                "ccynm_uz": "O`zbek so`mi",
-                "ccynm_uzc": "Ўзбек сўми",
-                "ccynm_ru": "Узбекский сум",
-                "ccynm_en": "Uzbek Sum"
-            },
-            "firm": null,
-            "parent": null
         },
         {
             "id": "9668607f-55ed-4b23-836f-789888f8686b",
             "name": "Wallet 526",
             "project_api_url": null,
-            "currency": {
-                "id": "96685e54-09a7-4807-9826-25dd4b08c463",
-                "code": "860",
-                "ccy": "UZS",
-                "ccynm_uz": "O`zbek so`mi",
-                "ccynm_uzc": "Ўзбек сўми",
-                "ccynm_ru": "Узбекский сум",
-                "ccynm_en": "Uzbek Sum"
-            },
-            "firm": null,
-            "parent": null
         },
         ...
     ],
@@ -1482,4 +1460,476 @@ Server response:
         ]
     }
 }
+```
+
+## Administration of categories
+
+### GET `/categories`
+
+Parameters:
+
+- search (optional, any string to search from name)
+- name (optional, for filtering by name)
+- wallet_id (optional, uuid, for filtering by wallet_id)
+- parent_id (optional, uuid, for filtering by parent_id)
+- color (optional, 'string', for filtering by color)
+- bgcolor (optional, 'string', for filtering by bgcolor)
+- type (optional, integer, for filtering by type, value can be 1 or 2)
+- column (optional, for ordering by column name)
+- order (optional, for ordering ascendant and descendant, values can be 'asc' or 'desc')
+
+Http request example:
+
+```
+{
+	"search": "Something",
+	"name":"Category 4",
+    "wallet_id": "9668607f-55ed-4b23-836f-789888f8686b",
+    "parent_id": "9668607f-55ed-4b23-836f-789888f8686b",
+    "color": "#123789",
+    "bgcolor":"#FEDEEE",
+    "type": 2,
+    "column": "created_at",
+    "order": "desc
+}
+```
+
+Server response:
+
+```
+{
+    "data": [
+        {
+            "id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+            "name": "Category 1",
+            "icon": "Some icon",
+            "color": "#000000",
+            "bgcolor": "#FFFFFF",
+            "type": 1
+        },
+        {
+            "id": "9669a5df-8549-4aa7-b40b-f1e2f792b328",
+            "name": "Category 2",
+            "icon": "Some other icon",
+            "color": "#FFFFFF",
+            "bgcolor": "#000000",
+            "type": 2
+        },
+        ...
+    ],
+    "links": {
+        "first": "<API_URL>/categories?page=1",
+        "last": "<API_URL>/categories?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "<API_URL>/categories?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "<API_URL>/categories",
+        "per_page": "25",
+        "to": 4,
+        "total": 4
+    }
+}
+```
+
+### POST `/categories`
+
+Parameters:
+
+- name (required, string)
+- icon (required, string)
+- color (optional, string of HEX code, ex: #000000)
+- bgcolor (optional, string of HEX code, ex: #FFFFFF)
+- type (required, integer, value can be 1 or 2)
+- parent_id (optional, uuid)
+- wallet_id (required, uuid of wallet)
+
+Http request example:
+
+```
+{
+	"name":"Category 5",
+    "icon": "Some-icon",
+    "color": "#123789",
+    "bgcolor":"#FEDEEE",
+    "type": 1,
+    "parent_id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+    "wallet_id": "9668607f-55ed-4b23-836f-789888f8686b"
+}
+```
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "9669c883-53dc-47b0-bd90-e752706b5de5",
+        "wallet": {
+            "id": "9668607f-55ed-4b23-836f-789888f8686b",
+            "name": "Wallet 526",
+            "project_api_url": null
+        },
+        "name": "Category 5",
+        "icon": "Some-icon",
+        "color": "#123789",
+        "bgcolor": "#FEDEEE",
+        "type": 1,
+        "parent": {
+            "id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+            "name": "Category 1",
+            "icon": "Some icon",
+            "color": "#000000",
+            "bgcolor": "#FFFFFF",
+            "type": 1
+        },
+        "children": [],
+        "created_at": "2022-05-29 12:53:17",
+        "created_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-05-29 12:53:17",
+        "updated_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### GET `/categories/{id}`
+
+No params
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "9669c883-53dc-47b0-bd90-e752706b5de5",
+        "wallet": {
+            "id": "9668607f-55ed-4b23-836f-789888f8686b",
+            "name": "Wallet 526",
+            "project_api_url": null
+        },
+        "name": "Category 5",
+        "icon": "Some-icon",
+        "color": "#123789",
+        "bgcolor": "#FEDEEE",
+        "type": 1,
+        "parent": {
+            "id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+            "name": "Category 1",
+            "icon": "Some icon",
+            "color": "#000000",
+            "bgcolor": "#FFFFFF",
+            "type": 1
+        },
+        "children": [],
+        "created_at": "2022-05-29 12:53:17",
+        "created_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-05-29 12:53:17",
+        "updated_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### PUT `/categories/{id}`
+
+Parameters:
+
+- name (optional, string)
+- icon (optional, string)
+- color (optional, string of HEX code, ex: #000000)
+- bgcolor (optional, string of HEX code, ex: #FFFFFF)
+- type (optional, integer, value can be 1 or 2)
+- parent_id (optional, uuid)
+- wallet_id (optional, uuid of wallet)
+
+Http request example:
+
+```
+{
+	"name":"Category 7",
+    "icon": "Some-other-icon",
+    "color": "#139751",
+    "bgcolor":"#AB00BA",
+    "type": 2,
+    "parent_id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+    "wallet_id": "9668607f-55ed-4b23-836f-789888f8686b"
+}
+```
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "9669c883-53dc-47b0-bd90-e752706b5de5",
+        "wallet": {
+            "id": "9668607f-55ed-4b23-836f-789888f8686b",
+            "name": "Wallet 526",
+            "project_api_url": null
+        },
+        "name": "Category 7",
+        "icon": "Some-other-icon",
+        "color": "#139751",
+        "bgcolor": "#AB00BA",
+        "type": 2,
+        "parent": {
+            "id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+            "name": "Category 1",
+            "icon": "Some icon",
+            "color": "#000000",
+            "bgcolor": "#FFFFFF",
+            "type": 1
+        },
+        "children": [],
+        "created_at": "2022-05-29 12:53:17",
+        "created_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-05-29 12:57:58",
+        "updated_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### DELETE `/categories/{id}`
+
+No params
+
+Server response:
+
+```
+
+```
+
+## CRUD for payment methods
+
+### GET `/payment_methods`
+
+Parameters:
+
+- search (optional, any string to search from name)
+- column (optional, for ordering by column name)
+- order (optional, for ordering ascendant and descendant, values can be 'asc' or 'desc')
+
+Http request example:
+
+```
+{
+	"search": "Something",
+    "column": "created_at",
+    "order": "desc
+}
+```
+
+Server response:
+
+```
+{
+    "data": [
+        {
+            "id": "96668e9a-de90-4268-8d87-12ad9bcd7c90",
+            "name": "Cash"
+        },
+        {
+            "id": "96668ead-0606-4da9-aa51-8ae1c97fe21c",
+            "name": "UZCARD"
+        },
+		...
+    ],
+    "links": {
+        "first": "<API_URL>/payment_methods?page=1",
+        "last": "<API_URL>/payment_methods?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "<API_URL>/payment_methods?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "<API_URL>/payment_methods",
+        "per_page": "25",
+        "to": 3,
+        "total": 3
+    }
+}
+```
+
+### POST `/payment_methods`
+
+Parameters:
+
+- name (required, string)
+
+Http request example:
+
+```
+{
+	"name": "VISA CARD",
+}
+```
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "96680f65-96fb-4e90-9e99-0e067ef908a7",
+        "name": "VISA CARD",
+        "created_at": "2022-05-28 16:19:50",
+        "created_by": {
+            "id": "96668bce-90b6-470a-8f40-180547c13fe3",
+            "name": "John Doe",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-05-28 16:19:50",
+        "updated_by": {
+            "id": "96668bce-90b6-470a-8f40-180547c13fe3",
+            "name": "John Doe",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### GET `/payment_methods/{id}`
+
+No params
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "96680f65-96fb-4e90-9e99-0e067ef908a7",
+        "name": "VISA CARD",
+        "created_at": "2022-05-28 16:19:50",
+        "created_by": {
+            "id": "96668bce-90b6-470a-8f40-180547c13fe3",
+            "name": "John Doe",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-05-28 16:19:50",
+        "updated_by": {
+            "id": "96668bce-90b6-470a-8f40-180547c13fe3",
+            "name": "John Doe",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### PUT `/payment_methods/{id}`
+
+Parameters:
+
+- name (optional, string)
+
+Http request example:
+
+```
+{
+	"name": "MasterCard",
+}
+```
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "96680f65-96fb-4e90-9e99-0e067ef908a7",
+        "name": "MasterCard",
+        "created_at": "2022-05-28 16:19:50",
+        "created_by": {
+            "id": "96668bce-90b6-470a-8f40-180547c13fe3",
+            "name": "John Doe",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-05-28 16:23:19",
+        "updated_by": {
+            "id": "96668bce-90b6-470a-8f40-180547c13fe3",
+            "name": "John Doe",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### DELETE `/payment_methods/{id}`
+
+No params
+
+Server response:
+
+```
+
 ```

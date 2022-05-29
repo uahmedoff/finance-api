@@ -86,6 +86,36 @@ class PermissionSeeder extends Seeder{
         Permission::create([
             'name' => "Detach user from wallet",
         ]);
+        Permission::create([
+            'name' => "See categories",
+        ]);
+        Permission::create([
+            'name' => "Create category",
+        ]);
+        Permission::create([
+            'name' => "See category",
+        ]);
+        Permission::create([
+            'name' => "Edit category",
+        ]);
+        Permission::create([
+            'name' => "Delete category",
+        ]);
+        Permission::create([
+            'name' => "See payment methods",
+        ]);
+        Permission::create([
+            'name' => "Create payment method",
+        ]);
+        Permission::create([
+            'name' => "See payment method",
+        ]);
+        Permission::create([
+            'name' => "Edit payment method",
+        ]);
+        Permission::create([
+            'name' => "Delete payment method",
+        ]);
     }
     
 }

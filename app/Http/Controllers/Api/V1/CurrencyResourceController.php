@@ -9,7 +9,7 @@ use App\Http\Requests\Api\V1\CurrencyRequest;
 use App\Http\Resources\Api\V1\CurrencyResource;
 use App\Http\Resources\Api\V1\CurrencyMiniResource;
 
-class CurrencyController extends Controller{
+class CurrencyResourceController extends Controller{
 
     protected $currency;
 

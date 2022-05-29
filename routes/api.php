@@ -3,11 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\CurrencyController;
-use App\Http\Controllers\Api\V1\FirmController;
-use App\Http\Controllers\Api\V1\UserController;
-use App\Http\Controllers\Api\V1\PermissionController;
 use App\Http\Controllers\Api\V1\WalletController;
+use App\Http\Controllers\Api\V1\PermissionController;
+use App\Http\Controllers\Api\V1\FirmResourceController;
+use App\Http\Controllers\Api\V1\UserResourceController;
+use App\Http\Controllers\Api\V1\WalletResourceController;
+use App\Http\Controllers\Api\V1\CategoryResourceController;
+use App\Http\Controllers\Api\V1\CurrencyResourceController;
+use App\Http\Controllers\Api\V1\PaymentMethodResourceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,10 +34,12 @@ Route::group(['prefix'=>'v1'],function(){
     Route::group(['middleware' => 'jwt.auth'], function ($router) {
         
         Route::apiResources([
-            'users' => UserController::class,
-            'currencies' => CurrencyController::class,
-            'firms' => FirmController::class,
-            'wallets' => WalletController::class
+            'users' => UserResourceController::class,
+            'currencies' => CurrencyResourceController::class,
+            'firms' => FirmResourceController::class,
+            'wallets' => WalletResourceController::class,
+            'categories' => CategoryResourceController::class,
+            'payment_methods' => PaymentMethodResourceController::class
         ]);
 
         Route::group(['prefix' => 'roles'], function($router){
@@ -50,8 +55,8 @@ Route::group(['prefix'=>'v1'],function(){
         });
 
         Route::group(['prefix' => 'wallets'],function($router){
-            Route::put('{id}/users',[WalletController::class,'attach_users']);
-            Route::put('{id}/users/{user_id}/detach',[WalletController::class,'detach_user']);
+            Route::put('{wallet}/users',[WalletController::class,'attach_users']);
+            Route::put('{wallet}/users/{user_id}/detach',[WalletController::class,'detach_user']);
         });
         
     });

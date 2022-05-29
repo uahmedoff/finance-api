@@ -9,7 +9,7 @@ use App\Http\Requests\Api\V1\FirmRequest;
 use App\Http\Resources\Api\V1\FirmResource;
 use App\Http\Resources\Api\V1\FirmMiniResource;
 
-class FirmController extends Controller{
+class FirmResourceController extends Controller{
 
     protected $firm;
 

@@ -11,7 +11,7 @@ use App\Http\Requests\Api\V1\UserRequest;
 use App\Http\Resources\Api\V1\UserResource;
 use App\Http\Resources\Api\V1\UserMiniResource;
 
-class UserController extends Controller{
+class UserResourceController extends Controller{
 
     protected $user;
 
