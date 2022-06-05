@@ -22,7 +22,6 @@ class CurrencyResourceController extends Controller{
         if(!auth()->user()->can('See currencies')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $currencies = $this->currency
             ->search()
             ->filter()
@@ -36,7 +35,6 @@ class CurrencyResourceController extends Controller{
         if(!auth()->user()->can('Create currency')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $currency = $this->currency->create([
             "code" => $request->code,
             "ccy" => $request->ccy,

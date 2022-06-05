@@ -23,7 +23,6 @@ class UserResourceController extends Controller{
     public function index(){
         if(!auth()->user()->can('See users'))
             return response()->json(['message'=>__('auth.forbidden')],403);
-
         $users = $this->user
             ->search()
             ->filter()
@@ -35,7 +34,6 @@ class UserResourceController extends Controller{
     public function store(UserRequest $request){
         if(!auth()->user()->can('Create user'))
             return response()->json(['message'=>__('auth.forbidden')],403);
-
         DB::beginTransaction();
         try {
             $user = $this->user->create([
@@ -51,7 +49,6 @@ class UserResourceController extends Controller{
             DB::rollback();
             return $e;
         }        
-
         return new UserResource($user);    
     }
 
@@ -65,7 +62,6 @@ class UserResourceController extends Controller{
     public function update(UserRequest $request, $id){
         if(!auth()->user()->can('Edit user'))
             return response()->json(['message'=>__('auth.forbidden')],403);
-        
         $user = $this->user->findOrFail($id);
         DB::beginTransaction();
         try {
@@ -88,7 +84,6 @@ class UserResourceController extends Controller{
         } catch (\Exception $e) {
             DB::rollback();
         }        
-
         return new UserResource($user);    
     }
 

@@ -103,7 +103,7 @@ Server response:
 }
 ```
 
-## CRUD for users
+## Administration of users
 
 ### GET `/users`
 
@@ -879,7 +879,7 @@ No params
 
 ```
 
-## CRUD for firms
+## Administrations of firms
 
 ### GET `/firms`
 
@@ -1747,7 +1747,7 @@ Server response:
 
 ```
 
-## CRUD for payment methods
+## Administration of payment methods
 
 ### GET `/payment_methods`
 
@@ -1925,6 +1925,301 @@ Server response:
 ```
 
 ### DELETE `/payment_methods/{id}`
+
+No params
+
+Server response:
+
+```
+
+```
+
+## Administration of transactions
+
+### GET `/transactions`
+
+Parameters:
+
+- wallet_id (optional, uuid)
+- category_id (optional, uuid)
+- payment_method_id (optional, uuid)
+- date (optional, date format: YYYY-mm-dd)
+- debit (optional, float)
+- credit (optional, float)
+- note (optional, string)
+- column (optional, for ordering by column name)
+- order (optional, for ordering ascendant and descendant, values can be 'asc' or 'desc')
+
+Http request example:
+
+```
+{
+	"wallet_id": "96687141-c27e-43ce-812e-2a4300858ac0",
+    "category_id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+    "payment_method_id": "966a0a47-260a-43b8-98b5-a9de46681d3d",
+    "date":"2022-06-05",
+    "wallet_id":"96687141-c27e-43ce-812e-2a4300858ac0",
+    "credit":79000,
+    "column": "created_at",
+    "order": "desc
+}
+```
+
+Server response:
+
+```
+{
+    "data": [
+        {
+            "id": "9676fc7b-f33c-412d-a6a7-4951623dd936",
+            "date": "2022-06-05",
+            "debit": "150000",
+            "credit": null,
+            "image": null,
+            "note": null
+        },
+        {
+            "id": "9676fcf1-9c2f-453d-9753-adc399ec1a89",
+            "date": "2022-06-05",
+            "debit": null,
+            "credit": "150000",
+            "image": null,
+            "note": null
+        },
+        ...
+    ],
+    "links": {
+        "first": "<API_URL>/transactions?page=1",
+        "last": "<API_URL>/transactions?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "<API_URL>/transactions?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "<API_URL>/transactions",
+        "per_page": "25",
+        "to": 19,
+        "total": 19
+    }
+}
+```
+
+### POST `/transactions`
+
+Parameters:
+
+- type (required, integer, 1 - Wallet, 2 - Firm)
+- wallet_id (required if type==1, uuid)
+- firm_id (required if type==2, uuid)
+- category_id (required, uuid)
+- payment_method_id (required, uuid)
+- date (required, date, format:YYYY-mm-dd)
+- debit (optional, float)
+- credit (optional, float)
+- image (optional, base64 encoded image)
+- note (optional, string)
+
+Http request example:
+
+```
+{
+	"type":1,
+    "category_id":"9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+    "payment_method_id": "966a0a47-260a-43b8-98b5-a9de46681d3d",
+    "date":"2022-06-05",
+    "wallet_id":"96687141-c27e-43ce-812e-2a4300858ac0",
+    "credit":79000,
+}
+```
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "967745f5-9118-4aa2-be89-a456e804048e",
+        "date": "2022-06-05",
+        "debit": null,
+        "credit": 79000,
+        "image": "http://URL/storage/hWXPpkoBALvIObRz.png",
+        "note": null,
+        "wallet": {
+            "id": "96687141-c27e-43ce-812e-2a4300858ac0",
+            "name": "Wallet 527",
+            "project_api_url": "<project_api_url>"
+        },
+        "category": {
+            "id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+            "name": "Category 1",
+            "icon": "Some icon",
+            "color": "#000000",
+            "bgcolor": "#FFFFFF",
+            "type": 1
+        },
+        "payment_method": {
+            "id": "966a0a47-260a-43b8-98b5-a9de46681d3d",
+            "name": "Cash"
+        },
+        "created_at": "2022-06-05 05:49:49",
+        "created_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-06-05 05:49:49",
+        "updated_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### GET `/transactions/{id}`
+
+No params
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "967745f5-9118-4aa2-be89-a456e804048e",
+        "date": "2022-06-05",
+        "debit": null,
+        "credit": "79000",
+        "image": "http://<URL>/storage/hWXPpkoBALvIObRz.png",
+        "note": null,
+        "wallet": {
+            "id": "96687141-c27e-43ce-812e-2a4300858ac0",
+            "name": "Wallet 527",
+            "project_api_url": "<project_api_url>"
+        },
+        "category": {
+            "id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+            "name": "Category 1",
+            "icon": "Some icon",
+            "color": "#000000",
+            "bgcolor": "#FFFFFF",
+            "type": 1
+        },
+        "payment_method": {
+            "id": "966a0a47-260a-43b8-98b5-a9de46681d3d",
+            "name": "Cash"
+        },
+        "created_at": "2022-06-05 05:49:49",
+        "created_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-06-05 05:49:49",
+        "updated_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### PUT `/transactions/{id}`
+
+Parameters:
+
+- wallet_id (optional, uuid)
+- category_id (optional, uuid)
+- payment_method_id (optional, uuid)
+- date (optional, date, format:YYYY-mm-dd)
+- debit (optional, float)
+- credit (optional, float)
+- image (optional, base64 encoded image)
+- note (optional, string)
+
+Http request example:
+
+```
+{
+	"type":1,
+    "category_id":"9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+    "payment_method_id": "966a0a47-260a-43b8-98b5-a9de46681d3d",
+    "date":"2022-06-05",
+    "wallet_id":"96687141-c27e-43ce-812e-2a4300858ac0",
+    "credit":79000,
+}
+```
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "967745f5-9118-4aa2-be89-a456e804048e",
+        "date": "2022-06-05",
+        "debit": null,
+        "credit": 98500,
+        "image": "http://<URL>/storage/2J1efxm775G128vy.png",
+        "note": null,
+        "wallet": {
+            "id": "96687141-c27e-43ce-812e-2a4300858ac0",
+            "name": "Wallet 527",
+            "project_api_url": "<project_api_url>"
+        },
+        "category": {
+            "id": "9669a4f5-e422-4d95-a54c-2af6e7518f6c",
+            "name": "Category 1",
+            "icon": "Some icon",
+            "color": "#000000",
+            "bgcolor": "#FFFFFF",
+            "type": 1
+        },
+        "payment_method": {
+            "id": "966a0a47-260a-43b8-98b5-a9de46681d3d",
+            "name": "Cash"
+        },
+        "created_at": "2022-06-05 05:49:49",
+        "created_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-06-05 06:02:01",
+        "updated_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### DELETE `/transactions/{id}`
 
 No params
 

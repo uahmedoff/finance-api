@@ -21,7 +21,6 @@ class CategoryResourceController extends Controller{
     public function index(){
         if(!auth()->user()->can('See categories'))
             return response()->json(['message' => __('auth.forbidden')],403);
-
         $categories = $this->category
             ->search()
             ->filter()
@@ -34,7 +33,6 @@ class CategoryResourceController extends Controller{
     public function store(CategoryRequest $request){
         if(!auth()->user()->can('Create category'))
             return response()->json(['message' => __('auth.forbidden')],403);
-        
         $category = $this->category->create([
             'name' => $request->name,
             'icon' => $request->icon,
@@ -50,7 +48,6 @@ class CategoryResourceController extends Controller{
     public function show($id){
         if(!auth()->user()->can('See category'))
             return response()->json(['message' => __('auth.forbidden')],403);
-
         $category = $this->category->findOrFail($id);
         return new CategoryResource($category);
     }
@@ -58,7 +55,6 @@ class CategoryResourceController extends Controller{
     public function update(Request $request, $id){
         if(!auth()->user()->can('Edit category'))
             return response()->json(['message' => __('auth.forbidden')],403);
-
         $category = $this->category->findOrFail($id);
         if(
             $request->filled('name') && 
@@ -103,7 +99,6 @@ class CategoryResourceController extends Controller{
     public function destroy($id){
         if(!auth()->user()->can('Delete category'))
             return response()->json(['message' => __('auth.forbidden')],403);
-
         $category = $this->category->findOrFail($id);
         $category->delete();
         return response()->json([],204);

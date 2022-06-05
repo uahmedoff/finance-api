@@ -24,7 +24,6 @@ class PermissionController extends Controller{
     public function roles(){
         if(!auth()->user()->can('See roles'))
             return response()->json(['message'=>__('auth.forbidden')],403);    
-
         $roles = $this->role
             ->search()
             ->withPermissionsIfRequested()
@@ -36,7 +35,6 @@ class PermissionController extends Controller{
     public function role($id){
         if(!auth()->user()->can('See roles'))
             return response()->json(['message'=>__('auth.forbidden')],403);    
-
         $role = $this->role->findOrFail($id);
         return new RoleResource($role);    
     }
@@ -44,7 +42,6 @@ class PermissionController extends Controller{
     public function permissions($role_id = null){
         if(!auth()->user()->can('See permissions'))
             return response()->json(['message'=>__('auth.forbidden')],403);    
-
         $permissions = $this->permission
             ->search()
             ->filterRole($role_id)
@@ -57,15 +54,13 @@ class PermissionController extends Controller{
     public function permission($id){
         if(!auth()->user()->can('See permissions'))
             return response()->json(['message'=>__('auth.forbidden')],403);    
-
         $permission = $this->permission->findOrFail($id);
         return new PermissionMiniResource($permission);    
     }
 
     public function attach_permissions_to_role(AttachPermissionRequest $request, $role_id){
         if(!auth()->user()->can('Attach permissions to role'))
-            return response()->json(['message'=>__('auth.forbidden')],403);
-            
+            return response()->json(['message'=>__('auth.forbidden')],403);  
         $role = $this->role->findOrFail($role_id);
         $permissions = explode(",",$request->permissions);
         $role->syncPermissions($permissions);

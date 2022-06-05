@@ -22,7 +22,6 @@ class FirmResourceController extends Controller{
         if(!auth()->user()->can('See firms')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $firms = $this->firm
             ->search()
             ->sort()
@@ -34,7 +33,6 @@ class FirmResourceController extends Controller{
         if(!auth()->user()->can('Create firm')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $firm = $this->firm->create([
             'name' => $request->name
         ]);
@@ -45,7 +43,6 @@ class FirmResourceController extends Controller{
         if(!auth()->user()->can('See firm')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $firm = $this->firm->findOrFail($id);
         return new FirmResource($firm);
     }
@@ -54,7 +51,6 @@ class FirmResourceController extends Controller{
         if(!auth()->user()->can('Edit firm')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $firm = $this->firm->findOrFail($id);
         if($request->filled('name') && $request->name != $firm->getOriginal('name'))
             $firm->name = $request->name;
@@ -66,7 +62,6 @@ class FirmResourceController extends Controller{
         if(!auth()->user()->can('Delete firm')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $firm = $this->firm->findOrFail($id);
         $firm->delete();
         return response()->json([],204);

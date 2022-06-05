@@ -23,7 +23,6 @@ class WalletResourceController extends Controller{
         if(!auth()->user()->can('See wallets')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $wallets = $this->wallet
             ->search()
             ->filter()
@@ -37,7 +36,6 @@ class WalletResourceController extends Controller{
         if(!auth()->user()->can('Create wallet')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         DB::beginTransaction();
         try {
             $wallet = $this->wallet->create([
@@ -63,7 +61,6 @@ class WalletResourceController extends Controller{
             DB::rollback();
             return $e;
         }
-
         return new WalletResource($wallet);
     }
 
@@ -71,7 +68,6 @@ class WalletResourceController extends Controller{
         if(!auth()->user()->can('See wallet')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $wallet = $this->wallet->findOrFail($id);
         return new WalletResource($wallet);
     }
@@ -80,7 +76,6 @@ class WalletResourceController extends Controller{
         if(!auth()->user()->can('Edit wallet')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $wallet = $this->wallet->findOrFail($id);
         if(
             $request->filled('name') && 
@@ -108,7 +103,6 @@ class WalletResourceController extends Controller{
         ) 
             $wallet->firm_id = $request->firm_id;               
         $wallet->save();
-
         return new WalletResource($wallet);
     }
 
@@ -116,7 +110,6 @@ class WalletResourceController extends Controller{
         if(!auth()->user()->can('Delete wallet')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $wallet = $this->wallet->findOrFail($id);
         $wallet->delete();
         return response()->json([],204);

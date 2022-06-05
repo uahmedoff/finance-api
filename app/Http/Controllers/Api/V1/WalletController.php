@@ -14,7 +14,6 @@ class WalletController extends Controller{
         if(!auth()->user()->can('Attach users to wallet')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $user_ids = explode(",",$request->user_ids);
         $wallet->users()->attach($user_ids,[
             'created_at' => now(),
@@ -27,7 +26,6 @@ class WalletController extends Controller{
         if(!auth()->user()->can('Detach user from wallet')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $wallet->users()->detach($user_id);
         return new WalletResource($wallet);
     }

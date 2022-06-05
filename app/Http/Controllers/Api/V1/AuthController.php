@@ -15,17 +15,14 @@ class AuthController extends Controller{
 
     public function login(Request $request){
         $credentials = request(['phone', 'password']);
-
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => __('auth.failed')], 401);
         }
-
         return (new UserMiniResource($request->user()))->additional([
             'meta' => [
                 'token' => $token
             ]
         ]);
-
         return $this->respondWithToken($token);
     }
 
@@ -35,7 +32,6 @@ class AuthController extends Controller{
 
     public function logout(){
         auth()->logout();
-
         return response()->json(['message' => __('auth.logged_out')]);
     }
 

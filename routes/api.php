@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\WalletResourceController;
 use App\Http\Controllers\Api\V1\CategoryResourceController;
 use App\Http\Controllers\Api\V1\CurrencyResourceController;
 use App\Http\Controllers\Api\V1\PaymentMethodResourceController;
+use App\Http\Controllers\Api\V1\TransactionResourceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,8 @@ Route::group(['prefix'=>'v1'],function(){
             'firms' => FirmResourceController::class,
             'wallets' => WalletResourceController::class,
             'categories' => CategoryResourceController::class,
-            'payment_methods' => PaymentMethodResourceController::class
+            'payment_methods' => PaymentMethodResourceController::class,
+            'transactions' => TransactionResourceController::class
         ]);
 
         Route::group(['prefix' => 'roles'], function($router){

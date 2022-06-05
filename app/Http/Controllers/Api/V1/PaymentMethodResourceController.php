@@ -22,7 +22,6 @@ class PaymentMethodResourceController extends Controller{
         if(!auth()->user()->can('See payment methods')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $payment_methods = $this->payment_method
             ->search()
             ->sort()
@@ -34,7 +33,6 @@ class PaymentMethodResourceController extends Controller{
         if(!auth()->user()->can('Create payment method')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $payment_method = $this->payment_method->create([
             'name' => $request->name
         ]);
@@ -45,7 +43,6 @@ class PaymentMethodResourceController extends Controller{
         if(!auth()->user()->can('See payment method')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $payment_method = $this->payment_method->findOrFail($id);
         return new PaymentMethodResource($payment_method);
     }
@@ -54,7 +51,6 @@ class PaymentMethodResourceController extends Controller{
         if(!auth()->user()->can('Edit payment method')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $payment_method = $this->payment_method->findOrFail($id);
         if(
             $request->filled('name') && 
@@ -69,7 +65,6 @@ class PaymentMethodResourceController extends Controller{
         if(!auth()->user()->can('Delete payment method')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-
         $payment_method = $this->payment_method->findOrFail($id);
         $payment_method->delete();
         return response()->json([],204);

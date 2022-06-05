@@ -117,6 +117,7 @@ return [
     'uploaded' => ':attribute ni yuklab bo`lmadi.',
     'url' => ':attribute  formati noto`g`ri.',
     'uuid' => ':attribute to`g`ri UUID bo`lishi kerak.',
+    'file_must_be_image' => 'Fayl kengaytmasi quyidagilardan biri bo`lishi kerak: jpg, png, gif',
 
     /*
     |--------------------------------------------------------------------------

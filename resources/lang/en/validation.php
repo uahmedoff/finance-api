@@ -117,6 +117,7 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    'file_must_be_image' => 'File extension must be one of these: jpg, png, gif',
 
     /*
     |--------------------------------------------------------------------------

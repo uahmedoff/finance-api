@@ -116,6 +116,21 @@ class PermissionSeeder extends Seeder{
         Permission::create([
             'name' => "Delete payment method",
         ]);
+        Permission::create([
+            'name' => "See transactions",
+        ]);
+        Permission::create([
+            'name' => "Create transaction",
+        ]);
+        Permission::create([
+            'name' => "See transaction",
+        ]);
+        Permission::create([
+            'name' => "Edit transaction",
+        ]);
+        Permission::create([
+            'name' => "Delete transaction",
+        ]);
     }
     
 }
