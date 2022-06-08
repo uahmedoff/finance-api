@@ -5,13 +5,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\WalletController;
 use App\Http\Controllers\Api\V1\PermissionController;
+use App\Http\Controllers\Api\V1\ExchangeRateController;
 use App\Http\Controllers\Api\V1\FirmResourceController;
 use App\Http\Controllers\Api\V1\UserResourceController;
 use App\Http\Controllers\Api\V1\WalletResourceController;
 use App\Http\Controllers\Api\V1\CategoryResourceController;
 use App\Http\Controllers\Api\V1\CurrencyResourceController;
-use App\Http\Controllers\Api\V1\PaymentMethodResourceController;
 use App\Http\Controllers\Api\V1\TransactionResourceController;
+use App\Http\Controllers\Api\V1\ExchangeRateResourceController;
+use App\Http\Controllers\Api\V1\HistoryController;
+use App\Http\Controllers\Api\V1\PaymentMethodResourceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +36,7 @@ Route::group(['prefix'=>'v1'],function(){
     });
 
     Route::group(['middleware' => 'jwt.auth'], function ($router) {
-        
+
         Route::apiResources([
             'users' => UserResourceController::class,
             'currencies' => CurrencyResourceController::class,
@@ -41,7 +44,8 @@ Route::group(['prefix'=>'v1'],function(){
             'wallets' => WalletResourceController::class,
             'categories' => CategoryResourceController::class,
             'payment_methods' => PaymentMethodResourceController::class,
-            'transactions' => TransactionResourceController::class
+            'transactions' => TransactionResourceController::class,
+            'exchange_rates' => ExchangeRateResourceController::class
         ]);
 
         Route::group(['prefix' => 'roles'], function($router){
@@ -59,6 +63,14 @@ Route::group(['prefix'=>'v1'],function(){
         Route::group(['prefix' => 'wallets'],function($router){
             Route::put('{wallet}/users',[WalletController::class,'attach_users']);
             Route::put('{wallet}/users/{user_id}/detach',[WalletController::class,'detach_user']);
+        });
+
+        Route::group(['prefix' => 'exchange_rates'],function($router){
+            Route::get('latest/{ccy}',[ExchangeRateController::class,'get_latest']);
+        });
+
+        Route::group(['prefix' => 'history'],function($router){
+            Route::get('/',HistoryController::class);
         });
         
     });

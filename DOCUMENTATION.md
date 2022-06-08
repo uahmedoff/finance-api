@@ -2228,3 +2228,242 @@ Server response:
 ```
 
 ```
+
+## Administration of exchange rate
+
+### GET `/exchange_rates`
+
+Parameters:
+
+- currency_id (optional, uuid)
+- date (optional, date, format: YYYY-mm-dd)
+- column (optional, for ordering by column name)
+- order (optional, for ordering ascendant and descendant, values can be 'asc' or 'desc')
+
+Http request example:
+
+```
+{
+	"currency_id": "96687141-c27e-43ce-812e-2a4300858ac0",
+    "date": "2022-06-08",
+    "column": "created_at",
+    "order": "desc
+}
+```
+
+Server response:
+
+```
+{
+    "data": [
+        {
+            "id": "967dc7a2-9314-4fbf-ba96-4f8d9de9eb2c",
+            "date": "2022-06-08",
+            "rate": "10950.05",
+            "currency": {
+                "id": "96685e54-09a7-4807-9826-25dd4b08c463",
+                "code": "860",
+                "ccy": "UZS",
+                "ccynm_uz": "O`zbek so`mi",
+                "ccynm_uzc": "Ўзбек сўми",
+                "ccynm_ru": "Узбекский сум",
+                "ccynm_en": "Uzbek Sum"
+            }
+        },
+        {
+            "id": "967dc8d3-e2de-4daa-8f72-4452f0b1f9d1",
+            "date": "2022-06-09",
+            "rate": "10950.05",
+            "currency": {
+                "id": "96685e54-09a7-4807-9826-25dd4b08c463",
+                "code": "860",
+                "ccy": "UZS",
+                "ccynm_uz": "O`zbek so`mi",
+                "ccynm_uzc": "Ўзбек сўми",
+                "ccynm_ru": "Узбекский сум",
+                "ccynm_en": "Uzbek Sum"
+            }
+        },
+        ...
+    ],
+    "links": {
+        "first": "<API_URL>/exchange_rates?page=1",
+        "last": "<API_URL>/exchange_rates?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "<API_URL>/exchange_rates?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "<API_URL>/exchange_rates",
+        "per_page": "25",
+        "to": 3,
+        "total": 3
+    }
+}
+```
+
+### POST `/exchange_rates`
+
+Parameters:
+
+- currency_id (required, uuid)
+- date (optional, date, format: YYYY-mm-dd)
+- rate (required, float)
+
+Http request example:
+
+```
+{
+    "currency_id": "96685e54-0bd5-4f78-914e-4bd61c16b4ac",
+    "date": "2022-06-09",
+    "rate": 10950.05
+}
+```
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "967dfe7b-7190-4908-a65c-205ca9198455",
+        "date": "2022-06-09",
+        "rate": 10950.05,
+        "currency": {
+            "id": "96685e54-0bd5-4f78-914e-4bd61c16b4ac",
+            "code": "840",
+            "ccy": "USD",
+            "ccynm_uz": "AQSH Dollari",
+            "ccynm_uzc": "АҚШ доллари",
+            "ccynm_ru": "Доллар США",
+            "ccynm_en": "US Dollar"
+        },
+        "created_at": "2022-06-08 14:00:45",
+        "created_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-06-08 14:00:45",
+        "updated_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### GET `/exchange_rates/{id}`
+
+No params
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "967dfe7b-7190-4908-a65c-205ca9198455",
+        "date": "2022-06-09",
+        "rate": "10950.05",
+        "currency": {
+            "id": "96685e54-0bd5-4f78-914e-4bd61c16b4ac",
+            "code": "840",
+            "ccy": "USD",
+            "ccynm_uz": "AQSH Dollari",
+            "ccynm_uzc": "АҚШ доллари",
+            "ccynm_ru": "Доллар США",
+            "ccynm_en": "US Dollar"
+        },
+        "created_at": "2022-06-08 14:00:45",
+        "created_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "updated_at": "2022-06-08 14:00:45",
+        "updated_by": {
+            "id": "96685e53-475c-4d0f-8aaf-bd0d3e75c2e9",
+            "name": "Owner",
+            "phone": "901234567"
+        },
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+### GET `/exchange_rates/latest/{currency}`
+
+No params
+
+Server response:
+
+```
+{
+    "data": {
+        "id": "967ddf26-6a17-4961-afeb-1ef1e343228a",
+        "date": "2022-06-08",
+        "rate": "11046.94",
+        "currency": {
+            "id": "96685e54-0bd5-4f78-914e-4bd61c16b4ac",
+            "code": "840",
+            "ccy": "USD",
+            "ccynm_uz": "AQSH Dollari",
+            "ccynm_uzc": "АҚШ доллари",
+            "ccynm_ru": "Доллар США",
+            "ccynm_en": "US Dollar"
+        },
+        "created_at": "2022-06-08 12:33:09",
+        "created_by": null,
+        "updated_at": "2022-06-08 12:33:09",
+        "updated_by": null,
+        "deleted_at": "1970-01-01 06:00:00",
+        "deleted_by": null
+    }
+}
+```
+
+## History
+
+### GET `/history`
+
+Parameters:
+
+- by (optional, boolean, if true operations done by user will be returned, otherwise all operations except done by user will be returned)
+- type (optional, string, value should be one of these: "User", "Role", "Permission", "Currency", "Firm", "Wallet", "Category", "PaymentMethod", "Transaction","ExchangeRate")
+- type_id (optional, uuid, historiable_id)
+- status (optional, integer, value should be one of these: 1 (Model created), 2 (Model updated), 3 (Model deleted), 4 (Role attached), 5 (Role detached), 6 (Created by user), 7 (Updated by user), 8 (Deleted by user), 9 (Role attached by), 10 (Role detached by), 11 (Permission attached), 12 (Permission detached), 13 (Permission attached by) 14 (Permission detached by), 15 (Permission synced), 16 (Permission synced by), 17 (User attached to wallet), 18 (User detached from wallet), 19 (User attached to wallet by), 20 (User detached from wallet by), 21 (Wallet attached to user), 22 (Wallet detached from user), 23 (Wallet attached to user by), 24 (Wallet detached from user by))
+- column (optional, for ordering by column name)
+- order (optional, for ordering ascendant and descendant, values can be 'asc' or 'desc')
+
+Http request example:
+
+```
+{
+	"by": true,
+    "status": 7,
+    "column": "created_at",
+    "order": "desc
+}
+```

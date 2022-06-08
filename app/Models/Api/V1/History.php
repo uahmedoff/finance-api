@@ -3,13 +3,15 @@
 namespace App\Models\Api\V1;
 
 use App\Models\Traits\HasUuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\ScopeTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Chelout\RelationshipEvents\Concerns\HasMorphToEvents;
 
 class History extends BaseModel{
     
     use HasFactory, 
+        ScopeTrait, 
         HasUuid, 
         HasMorphToEvents;
 
@@ -54,6 +56,55 @@ class History extends BaseModel{
     protected $casts = [
         'details' => 'array',
     ];
+
+    private $search_columns = [
+    ];
+
+    public function scopeFilter($query){
+        if($filter = request('by')){
+            $query = $query->whereIn('status',[
+                self::STATUS_CREATED_BY_USER,
+                self::STATUS_UPDATED_BY_USER,
+                self::STATUS_DELETED_BY_USER,
+                self::STATUS_ROLE_ATTACHED_BY,
+                self::STATUS_ROLE_DETACHED_BY,
+                self::STATUS_PERMISSION_ATTACHED_BY,
+                self::STATUS_PERMISSION_DETACHED_BY,
+                self::STATUS_PERMISSION_SYNCED_BY,
+                self::STATUS_USER_ATTACHED_TO_WALLET_BY,
+                self::STATUS_USER_DETACHED_FROM_WALLET_BY,
+                self::STATUS_WALLET_ATTACHED_TO_USER_BY,
+                self::STATUS_WALLET_DETACHED_FROM_USER_BY
+            ]);
+        }
+        else{
+            $query = $query->whereNotIn('status',[
+                self::STATUS_CREATED_BY_USER,
+                self::STATUS_UPDATED_BY_USER,
+                self::STATUS_DELETED_BY_USER,
+                self::STATUS_ROLE_ATTACHED_BY,
+                self::STATUS_ROLE_DETACHED_BY,
+                self::STATUS_PERMISSION_ATTACHED_BY,
+                self::STATUS_PERMISSION_DETACHED_BY,
+                self::STATUS_PERMISSION_SYNCED_BY,
+                self::STATUS_USER_ATTACHED_TO_WALLET_BY,
+                self::STATUS_USER_DETACHED_FROM_WALLET_BY,
+                self::STATUS_WALLET_ATTACHED_TO_USER_BY,
+                self::STATUS_WALLET_DETACHED_FROM_USER_BY
+            ]);
+        }
+        if ($filter = request('type')){
+            $filter = 'App\\Models\\Api\\V1\\' . $filter;
+            $query = $query->where('historiable_type', $filter);
+            if ($filter = request('type_id')){
+                $query = $query->where('historiable_id', $filter);
+            }
+        }
+        if ($filter = request('status')){
+            $query = $query->where('status', $filter);
+        }
+        return $query;
+    }
 
     public function historiable(){
         return $this->morphTo();

@@ -131,6 +131,15 @@ class PermissionSeeder extends Seeder{
         Permission::create([
             'name' => "Delete transaction",
         ]);
+        Permission::create([
+            'name' => "See exchange rates",
+        ]);
+        Permission::create([
+            'name' => "Create exchange rate",
+        ]);
+        Permission::create([
+            'name' => "See exchange rate",
+        ]);
     }
     
 }
