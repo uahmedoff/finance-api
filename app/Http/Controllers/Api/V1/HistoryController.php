@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 class HistoryController extends Controller{
 
     public function __invoke(Request $request){
+        if(!auth()->user()->can('See history'))
+            return response()->json(['message' => __('auth.forbidden')],403);
         $history = History::filter()
             ->with('historiable')
             ->sort()

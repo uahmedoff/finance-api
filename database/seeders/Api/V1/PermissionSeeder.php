@@ -140,6 +140,9 @@ class PermissionSeeder extends Seeder{
         Permission::create([
             'name' => "See exchange rate",
         ]);
+        Permission::create([
+            'name' => "See history",
+        ]);
     }
     
 }
