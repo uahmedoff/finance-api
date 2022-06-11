@@ -12,8 +12,8 @@ class UserLoginResource extends JsonResource{
             'name' => $this->name,
             'phone' => $this->phone,
             'lang' => $this->lang,
-            'role' => new RoleMiniResource($this->roles[0]),
-            'permissions' => PermissionMiniResource::collection($this->roles[0]->permissions)
+            'role' => (new RoleMiniResource($this->roles[0]))->response()->original->name,
+            'permissions' => PermissionForAuthResource::collection($this->roles[0]->permissions)
         ];
     }
 }
