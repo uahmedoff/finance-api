@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\V1\UserMiniResource;
+use App\Http\Requests\Api\V1\AuthRequest;
 use App\Http\Resources\Api\V1\UserResource;
+use App\Http\Resources\Api\V1\UserMiniResource;
+use App\Http\Resources\Api\V1\UserLoginResource;
 
 class AuthController extends Controller{
     
@@ -13,12 +15,12 @@ class AuthController extends Controller{
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
-    public function login(Request $request){
+    public function login(AuthRequest $request){
         $credentials = request(['phone', 'password']);
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => __('auth.failed')], 401);
+            return response()->json(['errors' => ['phone' => [__('auth.failed')]]], 401);
         }
-        return (new UserMiniResource($request->user()))->additional([
+        return (new UserLoginResource($request->user()))->additional([
             'meta' => [
                 'token' => $token
             ]
@@ -27,7 +29,7 @@ class AuthController extends Controller{
     }
 
     public function me(){
-        return new UserResource(auth()->user());
+        return new UserLoginResource(auth()->user());
     }
 
     public function logout(){
