@@ -42,7 +42,7 @@ class Category extends BaseModel{
             $query = $query->where('parent_id', $filter);
         }
         if ($filter = request('name')){
-            $query = $query->where('name','ilike','%' .  $filter . '%');
+            $query = $query->where('name','like','%' .  $filter . '%');
         }
         if ($filter = request('color')){
             $query = $query->where('color',$filter);
@@ -54,7 +54,7 @@ class Category extends BaseModel{
             $query = $query->where('type',$filter);
         }
         if ($filter = request('ccynm_en')){
-            $query = $query->where('ccynm_en','ilike','%' .  $filter . '%');
+            $query = $query->where('ccynm_en','like','%' .  $filter . '%');
         }
         return $query;
     }

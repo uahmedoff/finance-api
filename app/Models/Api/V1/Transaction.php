@@ -52,7 +52,7 @@ class Transaction extends BaseModel{
             $query = $query->where('credit', $filter);
         }
         if ($filter = request('note')){
-            $query = $query->where('note','ilike','%' .  $filter . '%');
+            $query = $query->where('note','like','%' .  $filter . '%');
         }
         return $query;
     }

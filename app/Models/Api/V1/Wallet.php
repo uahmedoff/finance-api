@@ -34,10 +34,10 @@ class Wallet extends BaseModel{
 
     public function scopeFilter($query){
         if ($filter = request('name')){
-            $query = $query->where('name', 'ilike','%' .  $filter . '%');
+            $query = $query->where('name', 'like','%' .  $filter . '%');
         }
         if ($filter = request('project_api_url')){
-            $query = $query->where('project_api_url','ilike','%' .  $filter . '%');
+            $query = $query->where('project_api_url','like','%' .  $filter . '%');
         }
         if ($filter = request('currency_id')){
             $query = $query->where('currency_id',$filter);

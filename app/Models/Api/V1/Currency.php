@@ -40,19 +40,19 @@ class Currency extends BaseModel{
             $query = $query->where('code', $filter);
         }
         if ($filter = request('ccy')){
-            $query = $query->where('ccy','ilike','%' .  $filter . '%');
+            $query = $query->where('ccy','like','%' .  $filter . '%');
         }
         if ($filter = request('ccynm_uz')){
-            $query = $query->where('ccynm_uz','ilike','%' .  $filter . '%');
+            $query = $query->where('ccynm_uz','like','%' .  $filter . '%');
         }
         if ($filter = request('ccynm_uzc')){
-            $query = $query->where('ccynm_uzc','ilike','%' .  $filter . '%');
+            $query = $query->where('ccynm_uzc','like','%' .  $filter . '%');
         }
         if ($filter = request('ccynm_ru')){
-            $query = $query->where('ccynm_ru','ilike','%' .  $filter . '%');
+            $query = $query->where('ccynm_ru','like','%' .  $filter . '%');
         }
         if ($filter = request('ccynm_en')){
-            $query = $query->where('ccynm_en','ilike','%' .  $filter . '%');
+            $query = $query->where('ccynm_en','like','%' .  $filter . '%');
         }
         return $query;
     }

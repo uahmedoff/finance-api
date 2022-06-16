@@ -52,10 +52,10 @@ class User extends Authenticatable implements JWTSubject{
 
     public function scopeFilter($query){
         if ($filter = request('name')){
-            $query = $query->where('name','ilike','%' .  $filter . '%');
+            $query = $query->where('name','like','%' .  $filter . '%');
         }
         if ($filter = request('phone')){
-            $query = $query->where('phone','ilike','%' .  $filter . '%');
+            $query = $query->where('phone','like','%' .  $filter . '%');
         }
         if ($filter = request('lang')){
             $query = $query->where('lang',$filter);

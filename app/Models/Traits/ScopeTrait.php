@@ -13,7 +13,7 @@ trait ScopeTrait{
         $columns = $this->search_columns;
         return $query->where(function ($query) use($columns) {
             foreach ($columns as $column){
-                $query->orwhere($column, 'ilike',  '%' . request()->get('search') .'%');
+                $query->orwhere($column, 'like',  '%' . request()->get('search') .'%');
             }
         });
     }
