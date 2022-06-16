@@ -45,6 +45,16 @@ class WalletResourceController extends Controller{
                 'parent_id' => $request->parent_id,
                 'firm_id' => $request->firm_id
             ]);
+            foreach($request->categories as $category){
+                $wallet->categories()->create([
+                    'name' => $category['name'],
+                    'icon' => $category['icon'],
+                    'color' => $category['color'],
+                    'bgcolor' => $category['bgcolor'],
+                    'type' => $category['type'],
+                    'parent_id' => $category['parent_id'] ?? null,
+                ]);
+            }
             $users = [auth()->user()->id];
             if($request->user_ids && $request->filled('user_ids')){
                 $r_users = explode(",",$request->user_ids);

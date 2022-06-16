@@ -17,7 +17,13 @@ class WalletRequest extends FormRequest{
             'currency_id' => 'required|uuid',
             'parent_id' => 'nullable|uuid',
             'firm_id' => 'nullable|uuid',
-            'user_ids' => 'nullable|string'
+            'user_ids' => 'nullable|string',
+            'categories' => 'required|array',
+            'categories.*.name' => 'required|string',
+            'categories.*.icon' => 'required|string',
+            'categories.*.color' => 'required|string',
+            'categories.*.bgcolor' => 'required|string',
+            'categories.*.type' => 'required|integer|in:1,2',
         ];
     }
 }

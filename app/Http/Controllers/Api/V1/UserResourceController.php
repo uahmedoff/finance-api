@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\UserRequest;
 use App\Http\Resources\Api\V1\UserResource;
 use App\Http\Resources\Api\V1\UserMiniResource;
+use App\Http\Resources\Api\V1\UserLoginResource;
 
 class UserResourceController extends Controller{
 
@@ -28,7 +29,7 @@ class UserResourceController extends Controller{
             ->filter()
             ->sort()
             ->paginate($this->per_page);
-        return UserMiniResource::collection($users);    
+        return UserLoginResource::collection($users);    
     }
 
     public function store(UserRequest $request){

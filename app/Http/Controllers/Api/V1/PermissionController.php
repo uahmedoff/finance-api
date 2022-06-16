@@ -6,10 +6,11 @@ use App\Models\Api\V1\Role;
 use Illuminate\Http\Request;
 use App\Models\Api\V1\Permission;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\AttachPermissionRequest;
 use App\Http\Resources\Api\V1\RoleResource;
 use App\Http\Resources\Api\V1\RoleMiniResource;
+use App\Http\Requests\Api\V1\AttachPermissionRequest;
 use App\Http\Resources\Api\V1\PermissionMiniResource;
+use App\Http\Resources\Api\V1\PermissionForAuthResource;
 
 class PermissionController extends Controller{
 
@@ -47,8 +48,8 @@ class PermissionController extends Controller{
             ->filterRole($role_id)
             ->withRolesIfRequested()
             ->sort()
-            ->paginate($this->per_page);
-        return PermissionMiniResource::collection($permissions);    
+            ->get();
+        return PermissionForAuthResource::collection($permissions);    
     }
 
     public function permission($id){
