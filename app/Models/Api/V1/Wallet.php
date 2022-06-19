@@ -33,6 +33,12 @@ class Wallet extends BaseModel{
     ];
 
     public function scopeFilter($query){
+        if(!request('parent_id')){
+            $query = $query->whereNull('parent_id');
+        }
+        else{
+            $query = $query->where('parent_id',request('parent_id'));
+        }
         if ($filter = request('name')){
             $query = $query->where('name', 'like','%' .  $filter . '%');
         }
@@ -43,7 +49,6 @@ class Wallet extends BaseModel{
             $query = $query->where('currency_id',$filter);
         }
         if ($filter = request('parent_id')){
-            $query = $query->where('parent_id',$filter);
         }
         if ($filter = request('firm_id')){
             $query = $query->where('firm_id',$filter);

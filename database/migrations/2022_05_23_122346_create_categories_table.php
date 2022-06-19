@@ -16,7 +16,7 @@ class CreateCategoriesTable extends Migration
             $table->uuid('deleted_by')->nullable();
             $table->uuid('wallet_id')->index();
             $table->string('name');
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->string('color')->default("#000000");
             $table->string('bgcolor')->default("#FFFFFF");
             $table->unsignedTinyInteger('type')->comment('1-Income, 2-Expense');

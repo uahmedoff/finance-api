@@ -26,7 +26,7 @@ class WalletResourceController extends Controller{
         $wallets = $this->wallet
             ->search()
             ->filter()
-            // ->with('currency')
+            ->with(['currency','firm','users'])
             ->sort()
             ->paginate($this->per_page);
         return WalletMiniResource::collection($wallets);  
@@ -56,9 +56,8 @@ class WalletResourceController extends Controller{
                 ]);
             }
             $users = [auth()->user()->id];
-            if($request->user_ids && $request->filled('user_ids')){
-                $r_users = explode(",",$request->user_ids);
-                foreach($r_users as $user){
+            if($request->users && $request->filled('users')){
+                foreach($request->users as $user){
                     $users[] = $user;
                 }
             }
@@ -78,7 +77,10 @@ class WalletResourceController extends Controller{
         if(!auth()->user()->can('See wallet')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
-        $wallet = $this->wallet->findOrFail($id);
+        $wallet = $this->wallet
+            ->whereId($id)
+            ->with('categories')
+            ->firstOrFail();
         return new WalletResource($wallet);
     }
 
@@ -87,32 +89,61 @@ class WalletResourceController extends Controller{
             return response()->json(['message' => __('auth.forbidden')],403);
         }
         $wallet = $this->wallet->findOrFail($id);
-        if(
-            $request->filled('name') && 
-            $request->name != $wallet->getOriginal('name')
-        )
-            $wallet->name = $request->name;
-        if(
-            $request->filled('project_api_url') && 
-            $request->project_api_url != $wallet->getOriginal('project_api_url')
-        )
-            $wallet->project_api_url = $request->project_api_url;
-        if(
-            $request->filled('currency_id') && 
-            $request->currency_id != $wallet->getOriginal('currency_id')
-        )
-            $wallet->currency_id = $request->currency_id;
-        if(
-            $request->filled('parent_id') && 
-            $request->parent_id != $wallet->getOriginal('parent_id')
-        )
-            $wallet->parent_id = $request->parent_id;
-        if(
-            $request->filled('firm_id') && 
-            $request->firm_id != $wallet->getOriginal('firm_id')
-        ) 
-            $wallet->firm_id = $request->firm_id;               
-        $wallet->save();
+        DB::beginTransaction();
+        try {
+            if(
+                $request->filled('name') && 
+                $request->name != $wallet->getOriginal('name')
+            )
+                $wallet->name = $request->name;
+            if(
+                $request->filled('project_api_url') && 
+                $request->project_api_url != $wallet->getOriginal('project_api_url')
+            )
+                $wallet->project_api_url = $request->project_api_url;
+            if(
+                $request->filled('currency_id') && 
+                $request->currency_id != $wallet->getOriginal('currency_id')
+            )
+                $wallet->currency_id = $request->currency_id;
+            if(
+                $request->filled('parent_id') && 
+                $request->parent_id != $wallet->getOriginal('parent_id')
+            )
+                $wallet->parent_id = $request->parent_id;
+            if(
+                $request->filled('firm_id') && 
+                $request->firm_id != $wallet->getOriginal('firm_id')
+            ) 
+                $wallet->firm_id = $request->firm_id;               
+            $wallet->save();
+            foreach($request->categories as $category){
+                $wallet->categories()->firstOrCreate(
+                    [
+                        'name' => $category['name'],
+                        'icon' => $category['icon'],
+                        'color' => $category['color'],
+                        'bgcolor' => $category['bgcolor'],
+                        'type' => $category['type'],
+                        'parent_id' => $category['parent_id'] ?? null,
+                    ]
+                );
+            }
+            $users = [auth()->user()->id];
+            if($request->users && $request->filled('users')){
+                foreach($request->users as $user){
+                    $users[] = $user;
+                }
+            }
+            $wallet->users()->sync($users,[
+                'created_at' => now(),
+                'created_by' => auth()->user()->id
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
         return new WalletResource($wallet);
     }
 

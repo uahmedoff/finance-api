@@ -51,6 +51,9 @@ class User extends Authenticatable implements JWTSubject{
     ];
 
     public function scopeFilter($query){
+        if($filter = request('without_me')){
+            $query = $query->where('id','!=',auth()->user()->id);
+        }
         if ($filter = request('name')){
             $query = $query->where('name','like','%' .  $filter . '%');
         }

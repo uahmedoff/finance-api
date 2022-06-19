@@ -11,9 +11,11 @@ class WalletMiniResource extends JsonResource{
             'id' => $this->id,
             'name' => $this->name,
             'project_api_url' => $this->project_api_url,
-            // 'currency' => new CurrencyMiniResource($this->currency),
-            // 'firm' => new FirmMiniResource($this->firm),
-            // 'parent' => new self($this->parent) 
+            'currency' => new CurrencyMiniResource($this->currency),
+            'firm' => new FirmMiniResource($this->firm),
+            'categories' => CategoryMiniResource::collection($this->categories),
+            'parent' => new self($this->parent),
+            'users' => UserMiniResource::collection($this->users)
         ];
     }
 }
