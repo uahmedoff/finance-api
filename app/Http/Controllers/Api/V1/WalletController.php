@@ -29,5 +29,23 @@ class WalletController extends Controller{
         $wallet->users()->detach($user_id);
         return new WalletResource($wallet);
     }
+
+    public function balance($wallet){
+        if(!auth()->user()->can('See wallet')){
+            return response()->json(['message' => __('auth.forbidden')],403);
+        }
+        $incomes = $wallet->income_transactions->sum('debit');
+        $expences = $wallet->income_transactions->sum('credit');
+        return $incomes - $expences;
+    }
     
+    public function monthly_cash_flow($wallet){
+        if(!auth()->user()->can('See wallets')){
+            return response()->json(['message' => __('auth.forbidden')],403);
+        }
+        $incomes = $wallet->income_transactions->whereBetween('date',[date('Y-m-01'),date('Y-m-t 23:59')])->sum('debit');
+        $expences = $wallet->income_transactions->whereBetween('date',[date('Y-m-01'),date('Y-m-t 23:59')])->sum('credit');
+        return $incomes - $expences;
+    }
+
 }

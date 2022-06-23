@@ -9,6 +9,7 @@ use Database\Seeders\Api\V1\CurrencySeeder;
 use Database\Seeders\Api\V1\PermissionSeeder;
 use Database\Seeders\Api\V1\UserHasRoleSeeder;
 use Database\Seeders\Api\V1\RoleHasPermissionSeeder;
+use Database\Seeders\Api\V1\PaymentMethodSeeder;
 
 class DatabaseSeeder extends Seeder{
 
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder{
         $this->call(RoleHasPermissionSeeder::class);
         $this->call(UserHasRoleSeeder::class);
         $this->call(CurrencySeeder::class);
+        $this->call(PaymentMethodSeeder::class);
     }
     
 }

@@ -25,7 +25,7 @@ class TransactionService extends Service{
         $image = ($request->image) ? File::createFromBase64($request->image) : null;
         return Transaction::create([
             'wallet_id' => (count($n)) ? $n['wallet_id'] : $request->wallet_id,
-            'category_id' => $request->category_id,
+            'category_id' => $request->filled('category_id') ? $request->category_id : null,
             'payment_method_id' => $request->payment_method_id,
             'date' => $request->date,
             'debit' => $request->debit,
@@ -36,6 +36,10 @@ class TransactionService extends Service{
     }
 
     private function transaction_inner($wallets,$request){
+        // print_r((array) $wallets);
+        // print_r($request->all());
+        // exit;
+
         $numbers = [];
         $total_number = 0;
         foreach($wallets as $wallet){
@@ -50,7 +54,9 @@ class TransactionService extends Service{
             }
             else{
                 $credit = round($request->credit/count($wallets),2);
-                $transaction = $this->create($request,$credit);            
+                $arr = [];
+                $arr['wallet_id'] = $wallet->id;
+                $transaction = $this->create($request,$credit,$arr);            
             }
         }
         foreach($numbers as $n){
@@ -79,7 +85,7 @@ class TransactionService extends Service{
             }
         }
         elseif($request->filled('debit')){
-            $credit = $request->credit;
+            $credit = null;
             $transaction = $this->create($request,$credit);
         }
 

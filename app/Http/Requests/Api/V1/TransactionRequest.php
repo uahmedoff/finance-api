@@ -18,7 +18,7 @@ class TransactionRequest extends FormRequest{
             'type' => 'required|integer',
             'wallet_id' => 'required_if:type,==,1|uuid',
             'firm_id' => 'required_if:type,==,2|uuid',
-            'category_id' => 'required|uuid',
+            'category_id' => 'nullable|uuid',
             'payment_method_id' => 'required|uuid',
             'date' => 'required|date_format:Y-m-d',
             'debit' => 'nullable|numeric',

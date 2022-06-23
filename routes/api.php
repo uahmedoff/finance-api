@@ -63,6 +63,8 @@ Route::group(['prefix'=>'v1'],function(){
         Route::group(['prefix' => 'wallets'],function($router){
             Route::put('{wallet}/users',[WalletController::class,'attach_users']);
             Route::put('{wallet}/users/{user_id}/detach',[WalletController::class,'detach_user']);
+            Route::put('{wallet}/balance',[WalletController::class,'balance']);
+            Route::put('{wallet}/monthly_cash_flow',[WalletController::class,'monthly_cash_flow']);
         });
 
         Route::group(['prefix' => 'exchange_rates'],function($router){

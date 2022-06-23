@@ -26,6 +26,7 @@ class WalletResourceController extends Controller{
         $wallets = $this->wallet
             ->search()
             ->filter()
+            ->onlyMy()
             ->with(['currency','firm','users'])
             ->sort()
             ->paginate($this->per_page);
@@ -81,6 +82,15 @@ class WalletResourceController extends Controller{
             ->whereId($id)
             ->with('categories')
             ->firstOrFail();
+        $balance_incomes = $wallet->income_transactions->sum('debit');
+        $balance_expences = $wallet->expence_transactions->sum('credit');    
+        $balance = $balance_incomes - $balance_expences;
+        $wallet['balance'] = $balance;
+
+        $cash_flow_incomes = $wallet->income_transactions->whereBetween('date',[date('Y-m-01'),date('Y-m-t 23:59')])->sum('debit');
+        $cash_flow_expences = $wallet->expence_transactions->whereBetween('date',[date('Y-m-01'),date('Y-m-t 23:59')])->sum('credit');
+        $monthly_cash_flow = $cash_flow_incomes - $cash_flow_expences;
+        $wallet['monthly_cash_flow'] = $monthly_cash_flow;
         return new WalletResource($wallet);
     }
 

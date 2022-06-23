@@ -13,7 +13,10 @@ class TransactionMiniResource extends JsonResource{
             'debit' => $this->debit,
             'credit' => $this->credit,
             'image' => $this->image,
-            'note' => $this->note
+            'note' => $this->note,
+            'wallet' => new WalletMiniResource($this->wallet),
+            'category' => new CategoryMiniResource($this->category),
+            'payment_method' => new PaymentMethodMiniResource($this->payment_method),
         ];
     }
 

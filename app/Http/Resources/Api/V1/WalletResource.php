@@ -23,7 +23,9 @@ class WalletResource extends JsonResource{
             'deleted_at' => $this->deleted_at,
             'deleted_by' => new UserMiniResource($this->destroyer),
             'users' => UserMiniResource::collection($this->users),
-            'categories' => CategoryResource::collection($this->categories)
+            'categories' => CategoryResource::collection($this->categories),
+            'balance' => $this->balance,
+            'monthly_cash_flow' => $this->monthly_cash_flow
         ];
     }
 }

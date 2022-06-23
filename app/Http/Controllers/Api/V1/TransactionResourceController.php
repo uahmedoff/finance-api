@@ -25,6 +25,7 @@ class TransactionResourceController extends Controller{
             return response()->json(['message'=>__('auth.forbidden')],403);    
         $transactions = $this->transaction
             ->filter()
+            ->with(['wallet','category','payment_method'])
             ->sort()
             ->paginate($this->per_page);
         return TransactionMiniResource::collection($transactions);  

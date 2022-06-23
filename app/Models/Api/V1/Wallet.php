@@ -56,6 +56,12 @@ class Wallet extends BaseModel{
         return $query;
     }
 
+    public function scopeOnlyMy($query){
+        return $query->whereHas('users',function($q){
+            $q->where('id',auth()->user()->id);
+        });
+    }
+
     public function currency(){
         return $this->belongsTo(Currency::class);
     }
@@ -82,6 +88,14 @@ class Wallet extends BaseModel{
 
     public function transactions(){
         return $this->hasMany(Transaction::class);
+    }
+
+    public function income_transactions(){
+        return $this->hasMany(Transaction::class)->whereNotNull('debit');
+    }
+
+    public function expence_transactions(){
+        return $this->hasMany(Transaction::class)->whereNotNull('credit');
     }
 
     public function history(){
