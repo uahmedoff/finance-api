@@ -9,7 +9,7 @@ class CategoryMiniResource extends JsonResource{
     public function toArray($request){
         return [
             'id' => $this->id,
-            // 'wallet' => new WalletMiniResource($this->wallet),
+            'wallet' => new WalletMicroResource($this->wallet),
             'name' => $this->name,
             'icon' => $this->icon,
             'color' => $this->color,

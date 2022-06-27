@@ -19,7 +19,7 @@ class WalletResourceController extends Controller{
         parent::__construct();
     }
 
-    public function index(){
+    public function index(Request $request){
         if(!auth()->user()->can('See wallets')){
             return response()->json(['message' => __('auth.forbidden')],403);
         }
@@ -28,8 +28,11 @@ class WalletResourceController extends Controller{
             ->filter()
             ->onlyMy()
             ->with(['currency','firm','users'])
-            ->sort()
-            ->paginate($this->per_page);
+            ->sort();
+        if($request->filled('all') && $request->all == true)    
+            $wallets = $wallets->get();
+        else    
+            $wallets = $wallets->paginate($this->per_page);
         return WalletMiniResource::collection($wallets);  
     }
 

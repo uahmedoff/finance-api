@@ -24,7 +24,7 @@ class CategoryResourceController extends Controller{
         $categories = $this->category
             ->search()
             ->filter()
-            // ->with('wallet.currency')
+            ->with('wallet.currency')
             ->sort()
             ->paginate($this->per_page);
         return CategoryMiniResource::collection($categories);    
