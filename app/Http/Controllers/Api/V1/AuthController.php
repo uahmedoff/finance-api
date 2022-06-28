@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Api\V1\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AuthRequest;
@@ -47,5 +48,17 @@ class AuthController extends Controller{
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    public function update(Request $request){
+        $user = User::findOrFail(auth()->user()->id);
+        if($request->filled('name') && $request->name != $user->getOriginal('name'))
+            $user->name = $request->name;
+        if($request->filled('password'))
+            $user->password = bcrypt($request->password);
+        if($request->filled('lang') && $request->lang != $user->getOriginal('lang'))
+            $user->lang = $request->lang;
+        $user->save();
+        return new UserResource($user);    
     }
 }

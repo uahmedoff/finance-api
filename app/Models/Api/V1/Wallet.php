@@ -33,11 +33,16 @@ class Wallet extends BaseModel{
     ];
 
     public function scopeFilter($query){
-        if(!request('parent_id')){
-            $query = $query->whereNull('parent_id');
+        if(request('parentWithChildren') && request('parentWithChildren') == true){
+            
         }
         else{
-            $query = $query->where('parent_id',request('parent_id'));
+            if(!request('parent_id')){
+                $query = $query->whereNull('parent_id');
+            }
+            else{
+                $query = $query->where('parent_id',request('parent_id'));
+            }
         }
         if ($filter = request('name')){
             $query = $query->where('name', 'like','%' .  $filter . '%');

@@ -33,6 +33,7 @@ Route::group(['prefix'=>'v1'],function(){
         Route::post('logout', [AuthController::class,'logout']);
         Route::post('refresh', [AuthController::class,'refresh']);
         Route::post('me', [AuthController::class,'me']);
+        Route::put('update', [AuthController::class,'update']);
     });
 
     Route::group(['middleware' => 'jwt.auth'], function ($router) {
