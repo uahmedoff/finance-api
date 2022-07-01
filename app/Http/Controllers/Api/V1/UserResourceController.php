@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\UserEvent;
 use App\Models\Api\V1\Role;
 use App\Models\Api\V1\User;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class UserResourceController extends Controller{
             ]);
             $role = Role::findByName($request->role);
             $user->assignRole($role);
-        
+            broadcast(new UserEvent);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -80,7 +81,9 @@ class UserResourceController extends Controller{
                 $role = Role::findByName($request->role);
                 $user->syncRoles($role);
             }
-        
+            
+            broadcast(new UserEvent);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -93,6 +96,7 @@ class UserResourceController extends Controller{
             return response()->json(['message'=>__('auth.forbidden')],403);
         $user = $this->user->findOrFail($id);    
         $user->delete();    
+        broadcast(new UserEvent);
         return response()->json([],204);
     }
 }

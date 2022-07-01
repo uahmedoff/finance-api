@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\WalletEvent;
 use Illuminate\Http\Request;
 use App\Models\Api\V1\Wallet;
 use Illuminate\Support\Facades\DB;
@@ -69,6 +70,7 @@ class WalletResourceController extends Controller{
                 'created_at' => now(),
                 'created_by' => auth()->user()->id
             ]);
+            broadcast(new WalletEvent);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -152,6 +154,7 @@ class WalletResourceController extends Controller{
                 'created_at' => now(),
                 'created_by' => auth()->user()->id
             ]);
+            broadcast(new WalletEvent);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -166,6 +169,7 @@ class WalletResourceController extends Controller{
         }
         $wallet = $this->wallet->findOrFail($id);
         $wallet->delete();
+        broadcast(new WalletEvent);
         return response()->json([],204);
     }
 

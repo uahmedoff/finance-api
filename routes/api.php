@@ -1,9 +1,11 @@
 <?php
 
+use App\Events\Hello;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\WalletController;
+use App\Http\Controllers\Api\V1\HistoryController;
 use App\Http\Controllers\Api\V1\PermissionController;
 use App\Http\Controllers\Api\V1\ExchangeRateController;
 use App\Http\Controllers\Api\V1\FirmResourceController;
@@ -13,7 +15,6 @@ use App\Http\Controllers\Api\V1\CategoryResourceController;
 use App\Http\Controllers\Api\V1\CurrencyResourceController;
 use App\Http\Controllers\Api\V1\TransactionResourceController;
 use App\Http\Controllers\Api\V1\ExchangeRateResourceController;
-use App\Http\Controllers\Api\V1\HistoryController;
 use App\Http\Controllers\Api\V1\PaymentMethodResourceController;
 
 /*
@@ -35,6 +36,10 @@ Route::group(['prefix'=>'v1'],function(){
         Route::post('me', [AuthController::class,'me']);
         Route::put('update', [AuthController::class,'update']);
     });
+
+    // Route::get('/broadcast',function(){
+    //     broadcast(new Hello());
+    // });
 
     Route::group(['middleware' => 'jwt.auth'], function ($router) {
 

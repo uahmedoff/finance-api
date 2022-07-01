@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\FirmEvent;
 use App\Models\Api\V1\Firm;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,6 +37,7 @@ class FirmResourceController extends Controller{
         $firm = $this->firm->create([
             'name' => $request->name
         ]);
+        broadcast(new FirmEvent);
         return new FirmResource($firm);
     }
 
@@ -55,6 +57,7 @@ class FirmResourceController extends Controller{
         if($request->filled('name') && $request->name != $firm->getOriginal('name'))
             $firm->name = $request->name;
         $firm->save();    
+        broadcast(new FirmEvent);
         return new FirmResource($firm);
     }
 
@@ -64,6 +67,7 @@ class FirmResourceController extends Controller{
         }
         $firm = $this->firm->findOrFail($id);
         $firm->delete();
+        broadcast(new FirmEvent);
         return response()->json([],204);
     }
 }

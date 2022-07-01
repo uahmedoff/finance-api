@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Api\V1\Role;
 use Illuminate\Http\Request;
+use App\Events\PermissionEvent;
 use App\Models\Api\V1\Permission;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\RoleResource;
@@ -65,6 +66,7 @@ class PermissionController extends Controller{
         $role = $this->role->findOrFail($role_id);
         $permissions = explode(",",$request->permissions);
         $role->syncPermissions($permissions);
+        broadcast(new PermissionEvent);
         return new RoleResource($role);    
     }
 }
